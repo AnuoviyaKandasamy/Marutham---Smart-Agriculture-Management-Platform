@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marutham | Unified Farmer Ecosystem</title>
+    <link rel="icon" type="image/png" href="https://img.icons8.com/fluency/48/leaf.png">
+    <link rel="stylesheet" href="css/style.css?v=11.0.4">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <nav class="landing-nav" id="main-nav">
+        <div class="container flex-between" style="height:100%;">
+            <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:10px;">
+                <div style="background:var(--primary); color:white; width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center;">
+                    <i data-lucide="leaf" style="width:18px; height:18px;"></i>
+                </div>
+                <span style="font-weight:800; color:var(--bg-dark); font-size:1.3rem; letter-spacing:-0.5px;">Marutham</span>
+            </a>
+            <div id="nav-links" class="nav-links">
+                <a href="#solutions" class="nav-link" data-i18n="nav_solutions">Solutions</a>
+                <a href="#testimonials" class="nav-link" data-i18n="nav_testimonials">Testimonials</a>
+                <a href="#how-it-works" class="nav-link" data-i18n="nav_process">Process</a>
+
+                <div class="lang-selector" style="margin: 0 10px;">
+                    <select id="lang-switcher" style="padding: 5px 10px; border-radius: 8px; border: 1px solid var(--border); background: white; font-weight: 600; font-family: inherit; cursor: pointer;">
+                        <option value="en">English</option>
+                        <option value="ta">தமிழ்</option>
+                    </select>
+                </div>
+
+                <a href="login.html" class="nav-link" data-i18n="nav_signin">Sign In</a>
+                <a href="register.html" class="btn btn-primary" style="padding: 0.6rem 1.5rem; font-size:0.85rem; border-radius:10px;" data-i18n="nav_get_started">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="container">
+        <div class="hero-split">
+            <div class="hero-content animate-left">
+                <div data-i18n="hero_badge" style="display:inline-block; background:var(--primary-light); color:var(--primary); padding:8px 20px; border-radius:30px; font-weight:700; font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:1.5rem; border: 1px solid rgba(20, 83, 45, 0.1);">The Future of Agriculture</div>
+                <h1 style="font-size: 3.8rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; color: var(--bg-dark);" data-i18n="hero_title">Cultivating the <br><span class="gradient-text">Digital Frontier</span></h1>
+                <p style="font-size: 1.15rem; color: var(--text-muted); margin-bottom: 2.5rem; max-width: 540px; line-height:1.8;" data-i18n="hero_desc">Join the first unified digital ecosystem built specifically for rural farmers. Access real-time intelligence and grow with the community.</p>
+                <div style="display:flex; gap:1.2rem;">
+                    <a href="register.html" class="btn btn-primary" data-i18n="hero_btn_start">Start Your Journey</a>
+                    <a href="#solutions" class="btn" style="border:1.5px solid var(--border); background:white;" data-i18n="hero_btn_explore">Explore Platform <i data-lucide="arrow-right" style="width:18px;"></i></a>
+                </div>
+            </div>
+            <div class="hero-image-wrap animate-right">
+                <div class="hero-glow"></div>
+                <img src="https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&q=80&w=1000" alt="Agriculture" class="hero-image float">
+            </div>
+        </div>
+    </header>
+
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card reveal">
+                    <span class="stat-num" data-target="10000">0</span><span class="stat-num-suffix">+</span>
+                    <p class="stat-label" data-i18n="stat_farmers">Active Farmers</p>
+                </div>
+                <div class="stat-card reveal" style="transition-delay: 0.1s;">
+                    <span class="stat-num" data-target="500">0</span><span class="stat-num-suffix">+</span>
+                    <p class="stat-label" data-i18n="stat_experts">Agri Experts</p>
+                </div>
+                <div class="stat-card reveal" style="transition-delay: 0.2s;">
+                    <span class="stat-num" data-target="1200000">0</span><span class="stat-num-suffix"></span>
+                    <p class="stat-label" data-i18n="stat_updates">Daily Updates</p>
+                </div>
+                <div class="stat-card reveal" style="transition-delay: 0.3s;">
+                    <span class="stat-num" data-target="15">0</span><span class="stat-num-suffix">%</span>
+                    <p class="stat-label" data-i18n="stat_growth">Yield Growth</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: 120px 0; background: var(--bg-main);">
+        <div class="container">
+            <div class="text-center reveal" style="margin-bottom: 6rem;">
+                <h2 style="font-size: 2.8rem; font-weight: 800; color: var(--bg-dark);" data-i18n="pillars_title">The Pillars of Marutham</h2>
+                <p style="color:var(--text-muted); max-width: 600px; margin: 1rem auto 0; font-size: 1.1rem;" data-i18n="pillars_desc">Establishing institutional trust through security, connectivity, and community values.</p>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 4rem;">
+                <div class="text-center reveal">
+                    <div style="width:90px; height:90px; background:var(--primary-light); color:var(--primary); border-radius:24px; display:flex; align-items:center; justify-content:center; margin: 0 auto 2rem; transform: rotate(-5deg); transition: var(--transition);" class="icon-box">
+                        <i data-lucide="shield-check" style="width:36px; height:36px;"></i>
+                    </div>
+                    <h3 style="font-size: 1.4rem; margin-bottom: 1rem; font-weight: 800;" data-i18n="pillar_security_title">Absolute Security</h3>
+                    <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.7;" data-i18n="pillar_security_desc">Every farmer and expert is verified through official channels, ensuring a safe and reliable network.</p>
+                </div>
+                <div class="text-center reveal" style="transition-delay: 0.1s;">
+                    <div style="width:90px; height:90px; background:var(--accent-light); color:var(--accent); border-radius:24px; display:flex; align-items:center; justify-content:center; margin: 0 auto 2rem; transform: rotate(5deg); transition: var(--transition);" class="icon-box">
+                        <i data-lucide="zap" style="width:36px; height:36px;"></i>
+                    </div>
+                    <h3 style="font-size: 1.4rem; margin-bottom: 1rem; font-weight: 800;" data-i18n="pillar_sync_title">Real-time Sync</h3>
+                    <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.7;" data-i18n="pillar_sync_desc">Receive instant updates on Mandi prices and weather alerts specifically for your geographical location.</p>
+                </div>
+                <div class="text-center reveal" style="transition-delay: 0.2s;">
+                    <div style="width:90px; height:90px; background:var(--primary-light); color:var(--primary); border-radius:24px; display:flex; align-items:center; justify-content:center; margin: 0 auto 2rem; transform: rotate(-3deg); transition: var(--transition);" class="icon-box">
+                        <i data-lucide="users" style="width:36px; height:36px;"></i>
+                    </div>
+                    <h3 style="font-size: 1.4rem; margin-bottom: 1rem; font-weight: 800;" data-i18n="pillar_community_title">Community Driven</h3>
+                    <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.7;" data-i18n="pillar_community_desc">Built by farmers, for farmers. Every feature is designed to solve real-world problems in the field.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="container" id="solutions" style="padding: 120px 0;">
+        <div class="text-center reveal" style="margin-bottom: 5rem;">
+            <h2 style="font-size: 2.8rem; font-weight: 800; color: var(--bg-dark);" data-i18n="solutions_title">Integrated Solutions</h2>
+            <p style="color:var(--text-muted); font-size: 1.1rem; margin-top: 1rem;" data-i18n="solutions_desc">A high-performance digital ecosystem for modern agriculture.</p>
+        </div>
+
+        <div class="bento-grid">
+            <div class="bento-item bento-hero reveal-left">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                    <div style="width:56px; height:56px; background:var(--primary); color:white; border-radius:16px; display:flex; align-items:center; justify-content:center; margin-bottom:2rem;">
+                        <i data-lucide="trending-up" style="width:28px; height:28px;"></i>
+                    </div>
+                </div>
+                <h3 style="font-size: 2rem; margin-bottom: 1.5rem; color: var(--primary); font-weight: 800;" data-i18n="sol_market_title">Market Intelligence</h3>
+                <p style="color:var(--text-main); font-weight:500; font-size:1.1rem; line-height: 1.7;" data-i18n="sol_market_desc">Track daily Mandi rates across national markets with AI-driven price forecasting and trend analysis tools.</p>
+                <div style="margin-top: 3rem;">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800" style="width:100%; height:280px; object-fit:cover; border-radius:16px; box-shadow: var(--shadow-md);" alt="Analytics">
+                </div>
+            </div>
+            <div class="bento-item bento-med reveal-right">
+                <div style="width:48px; height:48px; background:var(--bg-alt); color:var(--primary); border-radius:12px; display:flex; align-items:center; justify-content:center; margin-bottom:1.5rem;">
+                    <i data-lucide="tractor" style="width:24px; height:24px;"></i>
+                </div>
+                <h3 style="font-size: 1.4rem; margin-bottom: 0.8rem; font-weight: 800;" data-i18n="sol_machinery_title">Machinery Hub</h3>
+                <p style="font-size:1rem; color:var(--text-muted); line-height: 1.6;" data-i18n="sol_machinery_desc">Decentralized sharing network for equipment and machinery pool. Rent or lease assets seamlessly.</p>
+            </div>
+            <div class="bento-item bento-med reveal-right" style="transition-delay: 0.1s;">
+                <div style="width:48px; height:48px; background:var(--bg-alt); color:var(--primary); border-radius:12px; display:flex; align-items:center; justify-content:center; margin-bottom:1.5rem;">
+                    <i data-lucide="graduation-cap" style="width:24px; height:24px;"></i>
+                </div>
+                <h3 style="font-size: 1.4rem; margin-bottom: 0.8rem; font-weight: 800;" data-i18n="sol_expert_title">Expert Access</h3>
+                <p style="font-size:1rem; color:var(--text-muted); line-height: 1.6;" data-i18n="sol_expert_desc">Direct priority uplink to agricultural scientists and veterans for rapid problem solving in the field.</p>
+            </div>
+        </div>
+    </main>
+
+    <section id="testimonials" style="padding: 120px 0; background: var(--bg-alt);">
+        <div class="container">
+            <div class="text-center reveal" style="margin-bottom: 6rem;">
+                <h2 style="font-size: 2.8rem; font-weight: 800; color: var(--bg-dark);" data-i18n="testimonials_title">Voices from the Field</h2>
+                <p style="color:var(--text-muted); max-width: 600px; margin: 1rem auto 0; font-size: 1.1rem;" data-i18n="testimonials_desc">Hear how Marutham is transforming lives and boosting productivity across rural India.</p>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem;">
+                <div class="bento-item reveal" style="background: white;">
+                    <div style="font-size: 1.5rem; color: var(--accent); margin-bottom: 1.5rem;">⭐⭐⭐⭐⭐</div>
+                    <p style="font-style: italic; color: var(--text-main); margin-bottom: 2rem; font-size: 1.05rem; line-height: 1.8;" data-i18n="test_1_text">"Marutham's market insights are a game-changer. I've increased my profit margins by 15% this season alone!"</p>
+                    <div style="display:flex; align-items:center; gap:1.2rem;">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=60&h=60&crop=face" alt="Farmer" style="width:54px; height:54px; border-radius:50%; object-fit:cover; border: 3px solid var(--primary-light);">
+                        <div>
+                            <h4 style="font-weight:800; color:var(--bg-dark); font-size: 1.1rem;" data-i18n="test_1_name">Rajesh Kumar</h4>
+                            <p style="font-size:0.9rem; color:var(--text-muted);" data-i18n="test_1_role">Wheat Farmer, Punjab</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bento-item reveal" style="background: white; transition-delay: 0.1s;">
+                    <div style="font-size: 1.5rem; color: var(--accent); margin-bottom: 1.5rem;">⭐⭐⭐⭐⭐</div>
+                    <p style="font-style: italic; color: var(--text-main); margin-bottom: 2rem; font-size: 1.05rem; line-height: 1.8;" data-i18n="test_2_text">"Finding a tractor during peak season was always a nightmare. The Equipment Hub saved my harvest this year!"</p>
+                    <div style="display:flex; align-items:center; gap:1.2rem;">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=60&h=60&crop=face" alt="Farmer" style="width:54px; height:54px; border-radius:50%; object-fit:cover; border: 3px solid var(--primary-light);">
+                        <div>
+                            <h4 style="font-weight:800; color:var(--bg-dark); font-size: 1.1rem;" data-i18n="test_2_name">Priya Sharma</h4>
+                            <p style="font-size:0.9rem; color:var(--text-muted);" data-i18n="test_2_role">Rice Farmer, Maharashtra</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bento-item reveal" style="background: white; transition-delay: 0.2s;">
+                    <div style="font-size: 1.5rem; color: var(--accent); margin-bottom: 1.5rem;">⭐⭐⭐⭐⭐</div>
+                    <p style="font-style: italic; color: var(--text-main); margin-bottom: 2rem; font-size: 1.05rem; line-height: 1.8;" data-i18n="test_3_text">"The expert consultation feature is invaluable. I got precise advice on pest control within hours."</p>
+                    <div style="display:flex; align-items:center; gap:1.2rem;">
+                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=60&h=60&crop=face" alt="Farmer" style="width:54px; height:54px; border-radius:50%; object-fit:cover; border: 3px solid var(--primary-light);">
+                        <div>
+                            <h4 style="font-weight:800; color:var(--bg-dark); font-size: 1.1rem;" data-i18n="test_3_name">Amit Patel</h4>
+                            <p style="font-size:0.9rem; color:var(--text-muted);" data-i18n="test_3_role">Vegetable Farmer, Gujarat</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="background: var(--bg-dark); padding: 120px 0; overflow: hidden; position: relative;">
+        <div class="container" style="display: flex; align-items: center; gap: 6rem;">
+            <div style="flex: 1;" class="reveal-left">
+                <h2 style="font-size: 3.2rem; font-weight: 800; color: white; line-height: 1.1; margin-bottom: 2rem;" data-i18n="app_exp_title">Farm Management <br><span style="color: var(--accent);">In Your Pocket</span></h2>
+                <p style="color: rgba(255,255,255,0.7); font-size: 1.2rem; margin-bottom: 3.5rem; line-height: 1.8;" data-i18n="app_exp_desc">Our responsive web platform works flawlessly on any device. Manage your equipment, track market prices, and consult experts whether you are at home or in the field.</p>
+                <div style="display: flex; gap: 3rem;">
+                    <div>
+                        <span style="display: block; font-size: 1.8rem; color: white; font-weight: 800;">5.0 <i data-lucide="star" style="width:24px; height:24px; display:inline-block; vertical-align:middle; fill:var(--accent); stroke:var(--accent);"></i></span>
+                        <span style="color: rgba(255,255,255,0.5); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;" data-i18n="app_exp_rating">Farmer Rating</span>
+                    </div>
+                    <div style="border-left: 1px solid rgba(255,255,255,0.1); padding-left: 3rem;">
+                        <span style="display: block; font-size: 1.8rem; color: white; font-weight: 800;" data-i18n="app_exp_instant">Instant</span>
+                        <span style="color: rgba(255,255,255,0.5); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;" data-i18n="app_exp_expert">Expert Response</span>
+                    </div>
+                </div>
+            </div>
+            <div style="flex: 1.2; position: relative;" class="reveal-right">
+                <div style="background: var(--primary); width: 100%; height: 550px; border-radius: 40px; transform: rotate(3deg); position: absolute; z-index: 1; opacity: 0.5;"></div>
+                <img src="https://images.unsplash.com/photo-1590682680695-43b964a3ae17?auto=format&fit=crop&q=80&w=1000" style="width: 100%; height: 550px; object-fit: cover; border-radius: 40px; position: relative; z-index: 2; box-shadow: var(--shadow-lg);" alt="Indian Farmer in field">
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="feature-section" style="background: var(--bg-alt);">
+        <div class="container">
+            <div class="feature-row">
+                <div class="feature-info reveal-left">
+                    <span style="color:var(--primary); font-weight:800; font-size:0.8rem; text-transform:uppercase; letter-spacing:2px;" data-i18n="workflow_01">01. The Workflow</span>
+                    <h2 style="font-size: 2.8rem; margin: 1.5rem 0; font-weight:800; color:var(--bg-dark);" data-i18n="workflow_title_1">Digital Onboarding</h2>
+                    <p style="color:var(--text-muted); font-size:1.15rem; line-height:1.8;" data-i18n="workflow_desc_1">Connect your land details to our national digital infrastructure. Receive hyper-localized weather alerts, crop disease warnings, and Mandi intelligence tailored specifically to your harvest.</p>
+                </div>
+                <div class="feature-visual reveal-right">
+                    <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&q=80&w=1000" style="width:100%; height:100%; object-fit:cover;" alt="Farmer">
+                </div>
+            </div>
+
+            <div class="feature-row">
+                <div class="feature-info reveal-right">
+                    <span style="color:var(--primary); font-weight:800; font-size:0.8rem; text-transform:uppercase; letter-spacing:2px;" data-i18n="workflow_02">02. Resource Management</span>
+                    <h2 style="font-size: 2.8rem; margin: 1.5rem 0; font-weight:800; color:var(--bg-dark);" data-i18n="workflow_title_2">Collaborative Sharing</h2>
+                    <p style="color:var(--text-muted); font-size:1.15rem; line-height:1.8;" data-i18n="workflow_desc_2">Optimize your capital expenditure by using our equipment hub. Rent high-grade machinery from the community or lease out your idle assets to generate extra revenue during off-seasons.</p>
+                </div>
+                <div class="feature-visual reveal-left">
+                    <img src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&q=80&w=1000" style="width:100%; height:100%; object-fit:cover;" alt="Tractor">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="reveal">
+        <div class="container">
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <div style="background:var(--primary); color:white; width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center;">
+                            <i data-lucide="leaf" style="width:20px; height:20px;"></i>
+                        </div>
+                        <span style="font-weight:800; color:white; font-size:1.6rem; letter-spacing: -0.5px;">Marutham</span>
+                    </div>
+                    <p data-i18n="footer_brand_desc" style="font-size: 1rem; opacity: 0.8;">Building the nation's digital agricultural infrastructure through community collaboration and advanced intelligence.</p>
+                </div>
+                <div class="footer-col">
+                    <h4 data-i18n="footer_eco_title">Ecosystem</h4>
+                    <ul class="footer-links">
+                        <li><a href="prices.html" data-i18n="dash_nav_prices">Market Rates</a></li>
+                        <li><a href="forum.html" data-i18n="dash_nav_forum">Farmer Forum</a></li>
+                        <li><a href="equipment.html" data-i18n="dash_nav_equipment">Equipment Hub</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4 data-i18n="footer_support_title">Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" data-i18n="footer_help">Help Center</a></li>
+                        <li><a href="#" data-i18n="footer_security">Security Policy</a></li>
+                        <li><a href="#" data-i18n="footer_terms">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4 data-i18n="footer_contact_title">Contact</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" data-i18n="footer_portal_support">Portal Support</a></li>
+                        <li><a href="#" data-i18n="footer_grievance">Grievance Cell</a></li>
+                        <li><a href="#" data-i18n="footer_directory">Directory</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer_copy">© 2024 National Agri-Ecosystem Portal. All Rights Reserved.</p>
+                <p data-i18n="footer_managed">Designed & Managed by Marutham Labs.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script src="js/i18n.js"></script>
+    <script>
+
+        lucide.createIcons();
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    if (entry.target.classList.contains('reveal')) {
+                        const counter = entry.target.querySelector('.stat-num');
+                        if (counter && !counter.classList.contains('counted')) {
+                            animateCounter(counter);
+                        }
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+
+
+        function animateCounter(el) {
+            const target = parseInt(el.getAttribute('data-target'));
+            const duration = 2000;
+            const stepTime = 20;
+            const steps = duration
+            const increment = target
+            let current = 0;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    el.innerText = formatNumber(target);
+                    el.classList.add('counted');
+                    clearInterval(timer);
+                } else {
+                    el.innerText = formatNumber(Math.floor(current));
+                }
+            }, stepTime);
+        }
+
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(0) + 'K';
+            return num;
+        }
+
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('main-nav');
+            if (window.scrollY > 50) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
+        });
+    </script>
+</body>
+</html>

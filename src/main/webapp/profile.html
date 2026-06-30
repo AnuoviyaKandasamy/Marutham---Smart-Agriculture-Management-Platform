@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | Marutham</title>
+    <link rel="stylesheet" href="css/style.css?v=12.0.5">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+<div class="dashboard-shell">
+    <aside class="sidebar-v2">
+        <div class="sidebar-header">
+            <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:12px;">
+                <div style="background:var(--primary); color:white; width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center;">
+                    <i data-lucide="leaf" style="width:22px; height:22px;"></i>
+                </div>
+                <span style="font-weight:800; color:var(--bg-dark); font-size:1.5rem; letter-spacing:-1px;">Marutham</span>
+            </a>
+        </div>
+        <nav class="nav-group" style="flex:1; margin-top: 2rem;">
+            <a href="dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_dashboard">Dashboard</span></a>
+            <a href="forum.html" class="nav-item"><i data-lucide="message-square" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_forum">Community Forum</span></a>
+            <a href="prices.html" class="nav-item"><i data-lucide="line-chart" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_prices">Market Prices</span></a>
+            <a href="equipment.html" class="nav-item"><i data-lucide="tractor" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_equipment">Equipment Hub</span></a>
+            <a href="consultation.html" class="nav-item"><i data-lucide="graduation-cap" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_expert">Expert Help</span></a>
+            <a href="experts.html" class="nav-item"><i data-lucide="users" style="width:20px; height:20px;"></i><span data-i18n="nav_directory">Expert Directory</span></a>
+            <a href="profile.html" class="nav-item active"><i data-lucide="user" style="width:20px; height:20px;"></i><span data-i18n="nav_profile">My Profile</span></a>
+            <a id="adminLink" href="admin.html" class="nav-item" style="display:none; color:var(--accent);"><i data-lucide="shield-alert" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_admin">Admin Control</span></a>
+        </nav>
+        <div style="padding: 2rem; border-top:1px solid var(--border);">
+            <div style="margin-bottom: 1.5rem;">
+                <select id="lang-switcher" style="width:100%; padding: 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-alt); font-weight: 600; font-family: inherit; cursor: pointer;">
+                    <option value="en">English</option>
+                    <option value="ta">தமிழ்</option>
+                </select>
+            </div>
+            <a href="logout" class="nav-item" style="margin:0; border-radius:12px;">
+                <i data-lucide="log-out" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_signout">Sign Out</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content-v2">
+        <div class="top-nav">
+            <div style="font-size:1.25rem; font-weight:700; color:var(--bg-dark);" data-i18n="nav_profile">My Profile</div>
+            <div id="userInitial" style="width:44px; height:44px; background:linear-gradient(135deg, var(--primary), var(--success)); color:white; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.1rem;">F</div>
+        </div>
+
+        <div class="content-body">
+            <div style="max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem;">
+
+                <!-- Profile Info Card -->
+                <div class="card-v2" style="padding: 3rem;">
+                    <div style="display:flex; align-items:center; gap:2rem; margin-bottom:2.5rem;">
+                        <div id="profileAvatar" style="width:80px; height:80px; border-radius:50%; background:linear-gradient(135deg, var(--primary), var(--success)); display:flex; align-items:center; justify-content:center; font-size:2rem; font-weight:800; color:white;">F</div>
+                        <div>
+                            <h2 id="profileName" style="font-size:1.75rem; font-weight:800; color:var(--bg-dark); margin-bottom:4px;">Loading...</h2>
+                            <span id="profileRole" style="background:var(--primary-light); color:var(--primary); padding:4px 12px; border-radius:8px; font-weight:700; font-size:0.85rem;"></span>
+                        </div>
+                    </div>
+
+                    <form id="profileForm">
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+                            <div class="form-group">
+                                <label data-i18n="label_full_name">Full Name</label>
+                                <input type="text" name="fullName" id="pFullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="label_username">Username</label>
+                                <input type="text" id="pUsername" disabled style="background:var(--bg-alt); color:var(--text-muted);">
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="label_email">Email</label>
+                                <input type="email" id="pEmail" disabled style="background:var(--bg-alt); color:var(--text-muted);">
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="label_phone">Phone</label>
+                                <input type="tel" name="phone" id="pPhone" placeholder="10-digit number" data-i18n="placeholder_phone">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="label_location">Location / Market</label>
+                            <input type="text" name="location" id="pLocation" placeholder="e.g. Chennai Central Market" data-i18n="label_location">
+                        </div>
+                        <button type="submit" id="saveProfileBtn" class="btn btn-primary" style="padding:1rem 2.5rem; margin-top:1rem;" data-i18n="btn_submit">Save Changes</button>
+                    </form>
+                </div>
+
+                <!-- Change Password Card (Feature 4) -->
+                <div class="card-v2" style="padding: 3rem;">
+                    <h3 style="font-size:1.25rem; font-weight:800; color:var(--bg-dark); margin-bottom:2rem; display:flex; align-items:center; gap:10px;">
+                        <i data-lucide="lock" style="width:20px; height:20px; color:var(--primary);"></i> <span data-i18n="label_password">Change Password</span>
+                    </h3>
+                    <form id="pwdForm">
+                        <div class="form-group">
+                            <label data-i18n="label_password">Current Password</label>
+                            <input type="password" name="currentPassword" required placeholder="••••••••">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="label_password">New Password</label>
+                            <input type="password" name="newPassword" required placeholder="Min 8 chars, upper+lower+number">
+                        </div>
+                        <button type="submit" id="changePwdBtn" class="btn btn-outline" style="padding:1rem 2.5rem;" data-i18n="btn_submit">Update Password</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/i18n.js"></script>
+<script>
+lucide.createIcons();
+
+Api.get('login').then(data => {
+    if (!data || !data.loggedIn) { window.location.href = 'login.html'; return; }
+    if (data.user.role === 'ADMIN') document.getElementById('adminLink').style.display = 'flex';
+    document.getElementById('userInitial').innerText = data.user.fullName.charAt(0);
+});
+
+Api.get('profile').then(user => {
+    if (!user) return;
+    document.getElementById('profileName').innerText = user.fullName;
+    document.getElementById('profileRole').innerText = user.role;
+    document.getElementById('profileAvatar').innerText = user.fullName.charAt(0);
+    document.getElementById('pFullName').value  = user.fullName || '';
+    document.getElementById('pUsername').value  = user.username || '';
+    document.getElementById('pEmail').value     = user.email || '';
+    document.getElementById('pPhone').value     = user.phone || '';
+    document.getElementById('pLocation').value  = user.location || '';
+});
+
+document.getElementById('profileForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const data = App.Forms.serialize(this);
+    data.append('action', 'update');
+    App.UI.setLoading('saveProfileBtn', true);
+    Api.post('profile', data).then(res => {
+        App.UI.setLoading('saveProfileBtn', false);
+        if (res && res.success) {
+            App.UI.showToast('Profile updated successfully!', 'success');
+            document.getElementById('profileName').innerText = document.getElementById('pFullName').value;
+            document.getElementById('profileAvatar').innerText = document.getElementById('pFullName').value.charAt(0);
+        } else {
+            App.UI.showToast(res ? res.message : 'Update failed', 'error');
+        }
+    });
+});
+
+document.getElementById('pwdForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const data = App.Forms.serialize(this);
+    data.append('action', 'changePassword');
+    App.UI.setLoading('changePwdBtn', true);
+    Api.post('profile', data).then(res => {
+        App.UI.setLoading('changePwdBtn', false);
+        if (res && res.success) {
+            App.UI.showToast('Password changed!', 'success');
+            this.reset();
+        } else {
+            App.UI.showToast(res ? res.message : 'Failed', 'error');
+        }
+    });
+});
+</script>
+</body>
+</html>

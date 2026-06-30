@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Intelligence | Marutham</title>
+    <link rel="stylesheet" href="css/style.css?v=12.0.4">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="dashboard-shell">
+        <aside class="sidebar-v2">
+            <div class="sidebar-header">
+                <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:12px;">
+                    <div style="background:var(--primary); color:white; width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);">
+                        <i data-lucide="leaf" style="width:22px; height:22px;"></i>
+                    </div>
+                    <span style="font-weight:800; color:var(--bg-dark); font-size:1.5rem; letter-spacing:-1px;">Marutham</span>
+                </a>
+            </div>
+
+            <nav class="nav-group" style="flex:1; margin-top: 2rem;">
+                <a href="dashboard.html" class="nav-item">
+                    <i data-lucide="layout-dashboard" style="width:20px; height:20px;"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="forum.html" class="nav-item">
+                    <i data-lucide="message-square" style="width:20px; height:20px;"></i>
+                    <span>Community Forum</span>
+                </a>
+                <a href="prices.html" class="nav-item">
+                    <i data-lucide="line-chart" style="width:20px; height:20px;"></i>
+                    <span>Market Prices</span>
+                </a>
+                <a href="equipment.html" class="nav-item">
+                    <i data-lucide="tractor" style="width:20px; height:20px;"></i>
+                    <span>Equipment Hub</span>
+                </a>
+                <a href="consultation.html" class="nav-item">
+                    <i data-lucide="graduation-cap" style="width:20px; height:20px;"></i>
+                    <span>Expert Help</span>
+                </a>
+            </nav>
+
+            <div style="padding: 2rem; border-top:1px solid var(--border);">
+                <a href="logout" class="nav-item" style="margin:0; border-radius:12px;">
+                    <i data-lucide="log-out" style="width:20px; height:20px;"></i>
+                    <span>Sign Out</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content-v2">
+            <div class="top-nav">
+                <div style="font-size:1.25rem; font-weight:700; color:var(--bg-dark);">Crop Intelligence</div>
+                <div style="display:flex; align-items:center; gap:1.5rem;">
+                    <div style="width:44px; height:44px; background:linear-gradient(135deg, var(--primary), var(--success)); color:white; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.1rem; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);" id="userInitial">F</div>
+                </div>
+            </div>
+
+            <div class="content-body">
+                <div class="reveal active" style="margin-bottom: 4rem;">
+                    <h1 style="font-size: 2.5rem; font-weight: 800; color: var(--bg-dark); letter-spacing:-1.5px; margin-bottom: 0.5rem;">Environmental Advisory</h1>
+                    <p style="color: var(--text-muted); font-size:1.1rem;">Precision crop suggestions based on localized environmental telemetry.</p>
+                </div>
+
+                <div class="card-v2 reveal active" style="max-width: 900px; margin: 0 auto 5rem; border-radius: 24px;">
+                    <div style="display:flex; align-items:center; gap:15px; margin-bottom: 2.5rem;">
+                        <div style="background:var(--primary-light); color:var(--primary); width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center;">
+                            <i data-lucide="microscope" style="width:24px; height:24px;"></i>
+                        </div>
+                        <h3 style="font-size: 1.5rem; font-weight:800; color: var(--bg-dark);">Environmental Factors</h3>
+                    </div>
+                    <form id="recForm">
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                            <div class="form-group">
+                                <label>Soil Taxonomy</label>
+                                <select name="soilType">
+                                    <option value="Clay">Clayey</option>
+                                    <option value="Loamy">Loamy</option>
+                                    <option value="Black">Black Soil</option>
+                                    <option value="Sandy">Sandy</option>
+                                    <option value="Red">Red Soil</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Agricultural Season</label>
+                                <select name="season">
+                                    <option value="Kharif">Kharif (Monsoon)</option>
+                                    <option value="Rabi">Rabi (Winter)</option>
+                                    <option value="Summer">Zaid (Summer)</option>
+                                    <option value="Annual">Annual Cycle</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2.5rem;">
+                            <div class="form-group">
+                                <label>Hydraulic Availability</label>
+                                <select name="water">
+                                    <option value="High">Abundant/Irrigated</option>
+                                    <option value="Medium">Moderate</option>
+                                    <option value="Low">Low (Drought prone)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Geographical Region</label>
+                                <input type="text" name="region" placeholder="e.g. Madurai, Tamil Nadu" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="recBtn" style="width: 100%; padding: 1.1rem;">Analyze & Transmit Recommendations</button>
+                    </form>
+                </div>
+
+                <div id="results" class="reveal" style="display:none; margin: 0 auto 5rem; max-width: 900px; background: white; border: 2px solid var(--primary); border-radius: 24px; padding: 3rem; box-shadow: var(--shadow-lg);">
+                    <div style="background: var(--primary-light); color: var(--primary); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem;">
+                        <i data-lucide="sparkles" style="width: 32px; height: 32px;"></i>
+                    </div>
+                    <h3 style="color: var(--bg-dark); font-size: 1.75rem; font-weight: 800; margin-bottom: 1.5rem; letter-spacing: -0.5px; text-align: center;">Intelligence Output</h3>
+                    <div id="cropResults" style="display: flex; flex-direction: column; gap: 2rem;"></div>
+                </div>
+
+                <div class="reveal active">
+                    <div class="flex-between" style="border-bottom: 2px solid var(--border); padding-bottom: 1rem; margin-bottom: 3rem;">
+                        <h2 style="font-size: 1.75rem; font-weight:800; color: var(--bg-dark); letter-spacing:-0.5px;">Advisory Archive</h2>
+                        <span style="background:var(--bg-alt); color:var(--text-muted); padding:6px 14px; border-radius:50px; font-weight:800; font-size:0.8rem; text-transform:uppercase;">Historical Telemetry</span>
+                    </div>
+                    <div id="historyList" style="display: flex; flex-direction: column; gap: 2.5rem; max-width: 900px; margin: 0 auto;"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        lucide.createIcons();
+        function loadHistory() {
+            Api.get('recommendation').then(history => {
+                if(!history) return;
+                const div = document.getElementById('historyList');
+                if (history.length === 0) {
+                    div.innerHTML = '<div style="padding:4rem; text-align:center; background:var(--bg-alt); border-radius:24px;"><i data-lucide="database-zap" style="width:48px; height:48px; color:var(--border); margin-bottom:1rem;"></i><p style="color:var(--text-muted); font-size:1.1rem;">No previous environmental analyses found.</p></div>';
+                    return;
+                }
+                div.innerHTML = history.map(h => `
+                    <div class="card-v2 reveal active" style="padding: 2rem; border-left: 6px solid var(--primary);">
+                        <div class="flex-between" style="margin-bottom: 1.5rem;">
+                            <div style="display:flex; gap:10px;">
+                                <span style="background:var(--primary-light); color:var(--primary); padding:6px 14px; border-radius:8px; font-weight:800; font-size:0.8rem; text-transform:uppercase;">${h.soilType} Soil</span>
+                                <span style="background:var(--accent-light); color:var(--accent); padding:6px 14px; border-radius:8px; font-weight:800; font-size:0.8rem; text-transform:uppercase;">${h.season}</span>
+                            </div>
+                            <span style="color: var(--text-muted); font-weight:600; font-size:0.9rem;">${new Date(h.createdAt).toLocaleDateString(undefined, {dateStyle:'long'})}</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:15px; color: var(--text-main); font-weight:600; margin-bottom:1.5rem; font-size:1rem;">
+                            <i data-lucide="map-pin" style="width:18px; height:18px; color:var(--primary);"></i>
+                            <span>${h.region} • ${h.waterAvailability} Water Matrix</span>
+                        </div>
+                        <div style="background: var(--bg-main); padding: 1.5rem; border-radius: 16px; border: 1.5px solid var(--border);">
+                            <div style="color: var(--primary); font-weight: 800; font-size: 0.8rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:0.5rem;">Primary Recommendation</div>
+                            <span style="color: var(--bg-dark); font-weight: 800; font-size:1.1rem;">${h.recommendedCrops || 'N/A'}</span>
+                        </div>
+                    </div>
+                `).join('');
+                lucide.createIcons();
+            });
+        }
+
+        document.getElementById('recForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            App.UI.setLoading('recBtn', true);
+            const formData = App.Forms.serialize(this);
+            Api.post('recommendation', formData).then(data => {
+                App.UI.setLoading('recBtn', false);
+                if(!data || !data.categorized) return;
+
+                const resultsDiv = document.getElementById('results');
+                const cropResults = document.getElementById('cropResults');
+                cropResults.innerHTML = '';
+
+                Object.keys(data.categorized).forEach(category => {
+                    const section = document.createElement('div');
+                    section.innerHTML = `
+                        <h4 style="color: var(--primary); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">${category}</h4>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            ${data.categorized[category].map(crop => `
+                                <span style="padding: 0.6rem 1.2rem; background: var(--bg-alt); color: var(--bg-dark); border-radius: 12px; font-weight: 700; font-size: 0.95rem; border: 1px solid var(--border); display: flex; align-items: center; gap: 8px;">
+                                    <i data-lucide="check-circle" style="width:16px; height:16px; color:var(--primary);"></i> ${crop}
+                                </span>
+                            `).join('')}
+                        </div>
+                    `;
+                    cropResults.appendChild(section);
+                });
+
+                resultsDiv.style.display = 'block';
+                resultsDiv.classList.add('active');
+                resultsDiv.scrollIntoView({behavior: 'smooth', block: 'center'});
+                lucide.createIcons();
+                loadHistory();
+            });
+        });
+
+        Api.get('login').then(data => {
+            if (data && data.loggedIn) {
+                document.getElementById('userInitial').innerText = data.user.fullName.charAt(0);
+                loadHistory();
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

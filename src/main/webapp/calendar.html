@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Calendar | Marutham</title>
+    <link rel="stylesheet" href="css/style.css?v=12.0.4">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .calendar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem; }
+        .season-card { background: white; border-radius: 24px; padding: 2rem; border: 1px solid var(--border); transition: 0.3s; }
+        .season-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+        .month-tag { display: inline-block; padding: 4px 12px; border-radius: 20px; background: var(--bg-alt); color: var(--text-muted); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 1rem; }
+        .crop-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg-alt); border-radius: 12px; margin-bottom: 8px; font-weight: 700; color: var(--bg-dark); }
+        .crop-item i { color: var(--primary); }
+    </style>
+</head>
+<body>
+    <div class="dashboard-shell">
+        <aside class="sidebar-v2">
+            <div class="sidebar-header">
+                <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:12px;">
+                    <div style="background:var(--primary); color:white; width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);">
+                        <i data-lucide="leaf" style="width:22px; height:22px;"></i>
+                    </div>
+                    <span style="font-weight:800; color:var(--bg-dark); font-size:1.5rem; letter-spacing:-1px;">Marutham</span>
+                </a>
+            </div>
+
+            <nav class="nav-group" style="flex:1; margin-top: 2rem;">
+                <a href="dashboard.html" class="nav-item">
+                    <i data-lucide="layout-dashboard" style="width:20px; height:20px;"></i>
+                    <span data-i18n="dash_nav_dashboard">Dashboard</span>
+                </a>
+                <a href="forum.html" class="nav-item">
+                    <i data-lucide="message-square" style="width:20px; height:20px;"></i>
+                    <span data-i18n="dash_nav_forum">Community Forum</span>
+                </a>
+                <a href="prices.html" class="nav-item">
+                    <i data-lucide="line-chart" style="width:20px; height:20px;"></i>
+                    <span data-i18n="dash_nav_prices">Market Prices</span>
+                </a>
+                <a href="equipment.html" class="nav-item">
+                    <i data-lucide="tractor" style="width:20px; height:20px;"></i>
+                    <span data-i18n="dash_nav_equipment">Equipment Hub</span>
+                </a>
+                <a href="consultation.html" class="nav-item">
+                    <i data-lucide="graduation-cap" style="width:20px; height:20px;"></i>
+                    <span data-i18n="dash_nav_expert">Expert Help</span>
+                </a>
+                <a href="calendar.html" class="nav-item active">
+                    <i data-lucide="calendar" style="width:20px; height:20px;"></i>
+                    <span data-i18n="crop_calendar_title">Crop Calendar</span>
+                </a>
+                <a id="adminLink" href="admin.html" class="nav-item" style="display:none; color:var(--accent);">
+                    <i data-lucide="shield-alert" style="width:20px; height:20px;"></i>
+                    <span data-i18n="dash_nav_admin">Admin Control</span>
+                </a>
+            </nav>
+
+            <div style="padding: 2rem; border-top:1px solid var(--border);">
+                <div style="margin-bottom: 1.5rem;">
+                    <select id="lang-switcher" style="width:100%; padding: 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-alt); font-weight: 600; font-family: inherit; cursor: pointer;">
+                        <option value="en">English</option>
+                        <option value="ta">தமிழ்</option>
+                    </select>
+                </div>
+                <a href="logout" class="nav-item" style="margin:0; border-radius:12px;">
+                    <i data-lucide="log-out" style="width:20px; height:20px;"></i>
+                    <span data-i18n="dash_nav_signout">Sign Out</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content-v2">
+            <div class="top-nav">
+                <div style="font-size:1.25rem; font-weight:700; color:var(--bg-dark);" data-i18n="crop_calendar_title">Crop Calendar</div>
+                <div style="display:flex; align-items:center; gap:1.5rem;">
+                    <div style="width:44px; height:44px; background:linear-gradient(135deg, var(--primary), var(--success)); color:white; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.1rem; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);" id="userInitial">F</div>
+                </div>
+            </div>
+
+            <div class="content-body">
+                <div class="reveal active" style="margin-bottom: 3.5rem;">
+                    <h1 style="font-size: 2.5rem; font-weight: 800; color: var(--bg-dark); letter-spacing:-1.5px; margin-bottom: 0.5rem;" data-i18n="crop_calendar_title">National Crop Calendar</h1>
+                    <p style="color: var(--text-muted); font-size:1.1rem;" data-i18n="crop_calendar_desc">Optimized planting schedules for South Indian agriculture.</p>
+                </div>
+
+                <div class="calendar-grid">
+                    <div class="season-card reveal active">
+                        <span class="month-tag">June - Sept</span>
+                        <h3 style="font-size: 1.5rem; font-weight:800; color:var(--primary); margin-bottom:1.5rem;">Kharif (Monsoon)</h3>
+                        <div class="crop-item"><i data-lucide="check-circle-2"></i> Rice (Paddy)</div>
+                        <div class="crop-item"><i data-lucide="check-circle-2"></i> Maize (Corn)</div>
+                        <div class="crop-item"><i data-lucide="check-circle-2"></i> Cotton</div>
+                        <div class="crop-item"><i data-lucide="check-circle-2"></i> Groundnut</div>
+                    </div>
+
+                    <div class="season-card reveal active">
+                        <span class="month-tag">Oct - March</span>
+                        <h3 style="font-size: 1.5rem; font-weight:800; color:var(--accent); margin-bottom:1.5rem;">Rabi (Winter)</h3>
+                        <div class="crop-item"><i data-lucide="check-circle-2"></i> Wheat</div>
+                        <div class="crop-item"><i data-lucide="check-circle-2"></i> Mustard</div>
+                        <div class="crop-item"><i data-lucide="check-circle-2"></i> Chickpea</div>
+                        <div class="crop-item"><i data-lucide="check-circle-2"></i> Barley</div>
+                    </div>
+
+                    <div class="season-card reveal active">
+                        <span class="month-tag">April - June</span>
+                        <h3 style="font-size: 1.5rem; font-weight:800; color:var(--warning); margin-bottom:1.5rem;">Zaid (Summer)</h3>
+                        <div class="crop-item"><i data-lucide="check-circle-2"></i> Watermelon</div>
+                        <div class="crop-item"><i data-lucide="check-circle-2"></i> Cucumber</div>
+                        <div class="crop-item"><i data-lucide="check-circle-2"></i> Bitter Gourd</div>
+                        <div class="crop-item"><i data-lucide="check-circle-2"></i> Pumpkin</div>
+                    </div>
+                </div>
+
+                <div class="card-v2 reveal active" style="margin-top:4rem; background:var(--bg-alt);">
+                    <div style="display:flex; align-items:center; gap:20px;">
+                        <div style="background:var(--primary); color:white; width:60px; height:60px; border-radius:15px; display:flex; align-items:center; justify-content:center;">
+                            <i data-lucide="lightbulb" style="width:30px; height:30px;"></i>
+                        </div>
+                        <div>
+                            <h4 style="font-size:1.2rem; font-weight:800; color:var(--bg-dark);">Precision Recommendation</h4>
+                            <p style="color:var(--text-muted);">Want a personalized plan based on your soil and water availability?</p>
+                            <a href="recommendation.html" style="color:var(--primary); font-weight:700; text-decoration:none; display:inline-block; margin-top:10px;">Get Personalized AI Recommendation →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/i18n.js"></script>
+    <script>
+        lucide.createIcons();
+        Api.get('login').then(data => {
+            if (data && data.loggedIn) {
+                document.getElementById('userInitial').innerText = data.user.fullName.charAt(0);
+                if (data.user.role === 'ADMIN') document.getElementById('adminLink').style.display = 'flex';
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

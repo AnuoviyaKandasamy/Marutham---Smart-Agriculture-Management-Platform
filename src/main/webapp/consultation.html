@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expert Help | Marutham</title>
+    <link rel="stylesheet" href="css/style.css?v=12.0.5">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="dashboard-shell">
+        <aside class="sidebar-v2">
+            <div class="sidebar-header">
+                <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:12px;">
+                    <div style="background:var(--primary); color:white; width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);">
+                        <i data-lucide="leaf" style="width:22px; height:22px;"></i>
+                    </div>
+                    <span style="font-weight:800; color:var(--bg-dark); font-size:1.5rem; letter-spacing:-1px;">Marutham</span>
+                </a>
+            </div>
+
+            <nav class="nav-group" style="flex:1; margin-top: 2rem;">
+                <a href="dashboard.html" class="nav-item">
+                    <i data-lucide="layout-dashboard" style="width:20px; height:20px;"></i>
+                    <span data-i18n="dash_nav_dashboard">Dashboard</span>
+                </a>
+                <a href="forum.html" class="nav-item">
+                    <i data-lucide="message-square" style="width:20px; height:20px;"></i>
+                    <span data-i18n="dash_nav_forum">Community Forum</span>
+                </a>
+                <a href="prices.html" class="nav-item">
+                    <i data-lucide="line-chart" style="width:20px; height:20px;"></i>
+                    <span data-i18n="dash_nav_prices">Market Prices</span>
+                </a>
+                <a href="equipment.html" class="nav-item">
+                    <i data-lucide="tractor" style="width:20px; height:20px;"></i>
+                    <span data-i18n="dash_nav_equipment">Equipment Hub</span>
+                </a>
+                <a href="consultation.html" class="nav-item active">
+                    <i data-lucide="graduation-cap" style="width:20px; height:20px;"></i>
+                    <span data-i18n="dash_nav_expert">Expert Help</span>
+                </a>
+                <a href="experts.html" class="nav-item"><i data-lucide="users" style="width:20px; height:20px;"></i><span data-i18n="nav_directory">Expert Directory</span></a>
+                <a href="profile.html" class="nav-item"><i data-lucide="user" style="width:20px; height:20px;"></i><span data-i18n="nav_profile">My Profile</span></a>
+                <a id="adminLink" href="admin.html" class="nav-item" style="display:none; color:var(--accent);">
+                    <i data-lucide="shield-alert" style="width:20px; height:20px;"></i>
+                    <span data-i18n="dash_nav_admin">Admin Control</span>
+                </a>
+            </nav>
+
+            <div style="padding: 2rem; border-top:1px solid var(--border);">
+                <div style="margin-bottom: 1.5rem;">
+                    <select id="lang-switcher" style="width:100%; padding: 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-alt); font-weight: 600; font-family: inherit; cursor: pointer;">
+                        <option value="en">English</option>
+                        <option value="ta">தமிழ்</option>
+                    </select>
+                </div>
+                <a href="logout" class="nav-item" style="margin:0; border-radius:12px;">
+                    <i data-lucide="log-out" style="width:20px; height:20px;"></i>
+                    <span data-i18n="dash_nav_signout">Sign Out</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content-v2">
+            <div class="top-nav">
+                <div style="font-size:1.25rem; font-weight:700; color:var(--bg-dark);" data-i18n="dash_expert_advisory">Expert Advisory</div>
+                <div style="display:flex; align-items:center; gap:1.5rem;">
+                    <div style="position:relative;">
+                        <button onclick="toggleNotifs(event)" style="background:var(--bg-alt); border:none; cursor:pointer; width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; transition:0.3s;">
+                            <i data-lucide="bell" style="width:22px; height:22px; color:var(--text-main);"></i>
+                            <span id="notifBadge" class="notif-pill" style="display:none; position:absolute; top:-4px; right:-4px;">0</span>
+                        </button>
+                        <div id="notifDropdown" style="display:none; position:absolute; top:60px; right:0; width:360px; background:white; border:1px solid var(--border); border-radius:20px; box-shadow:var(--shadow-lg); z-index:1001; padding:1.5rem;">
+                            <div class="flex-between" style="padding-bottom:1rem; border-bottom:1px solid var(--border); margin-bottom:1rem;">
+                                <span style="font-weight:800; color:var(--bg-dark);" data-i18n="dash_notifs">Notifications</span>
+                                <i data-lucide="check-check" style="width:18px; height:18px; color:var(--primary); cursor:pointer;"></i>
+                            </div>
+                            <div id="notifList" style="max-height:300px; overflow-y:auto;"></div>
+                        </div>
+                    </div>
+                    <div style="width:44px; height:44px; background:linear-gradient(135deg, var(--primary), var(--success)); color:white; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.1rem; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);" id="userInitial">F</div>
+                </div>
+            </div>
+
+            <div class="content-body">
+                <div class="reveal active" style="margin-bottom: 4rem;">
+                    <h1 style="font-size: 2.5rem; font-weight: 800; color: var(--bg-dark); letter-spacing:-1.5px; margin-bottom: 0.5rem;" data-i18n="expert_consultation_title">Expert Consultation</h1>
+                    <p style="color: var(--text-muted); font-size:1.1rem;" data-i18n="expert_consultation_subtitle">Get technical assistance from certified agricultural scientists.</p>
+                </div>
+
+                <div class="container" style="padding:0;">
+                    <!-- Farmer Perspective -->
+                    <div id="farmerView" style="display:none;">
+                        <div class="card-v2 reveal active" style="max-width: 900px; margin: 0 auto 5rem; border-radius: 24px;">
+                            <div style="display:flex; align-items:center; gap:15px; margin-bottom: 2rem;">
+                                <div style="background:var(--primary-light); color:var(--primary); width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center;">
+                                    <i data-lucide="help-circle" style="width:24px; height:24px;"></i>
+                                </div>
+                                <h3 style="font-size: 1.5rem; font-weight:800; color: var(--bg-dark);" data-i18n="expert_ask_question">Ask a Question</h3>
+                            </div>
+                            <form id="askForm">
+                                <input type="hidden" name="action" value="ask">
+                                <div class="form-group" style="margin-bottom: 1.5rem;">
+                                    <label>Select Expert (Optional)</label>
+                                    <select name="targetExpertId" id="expertSelect" style="width:100%; padding:0.75rem; border-radius:8px; border:1px solid var(--border); font-family:inherit;">
+                                        <option value="">Any Available Expert</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label data-i18n="expert_query_label">Technical Details of Query</label>
+                                    <textarea name="question" placeholder="Specifiy crop variety, observable symptoms, or soil conditions for precise analysis..." rows="5" data-i18n="expert_query_placeholder" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary" id="askBtn" style="padding: 1.1rem 3rem;" data-i18n="expert_btn_submit">Submit Advisory Request</button>
+                            </form>
+                        </div>
+
+                        <div class="reveal active" style="margin-bottom: 3rem;">
+                            <div class="flex-between" style="border-bottom: 2px solid var(--border); padding-bottom: 1rem; margin-bottom: 2.5rem;">
+                                <h2 style="font-size: 1.75rem; font-weight:800; color: var(--bg-dark); letter-spacing:-0.5px;" data-i18n="expert_advisory_history">My Advisory History</h2>
+                                <span style="background:var(--primary-light); color:var(--primary); padding:6px 14px; border-radius:50px; font-weight:800; font-size:0.8rem; text-transform:uppercase;" data-i18n="expert_verified_records">Verified Records</span>
+                            </div>
+                            <div id="myConsultations" style="display: flex; flex-direction: column; gap: 2.5rem; max-width: 900px; margin: 0 auto;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Expert Perspective -->
+                    <div id="expertView" style="display:none;">
+                        <div class="reveal active" style="margin-bottom: 3rem;">
+                            <div class="flex-between" style="border-bottom: 2px solid var(--border); padding-bottom: 1rem; margin-bottom: 3rem;">
+                                <h2 style="font-size: 1.75rem; font-weight:800; color: var(--bg-dark); letter-spacing:-0.5px;" data-i18n="expert_pending_consults">Pending Consultations</h2>
+                                <div style="display:flex; align-items:center; gap:10px; color:var(--accent); font-weight:800; font-size:0.9rem; text-transform:uppercase;">
+                                    <i data-lucide="activity" style="width:18px; height:18px;"></i>
+                                    <span data-i18n="expert_priority_uplink">Priority Uplink</span>
+                                </div>
+                            </div>
+                            <div id="pendingConsultations" style="display: flex; flex-direction: column; gap: 2.5rem; max-width: 900px; margin: 0 auto;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/i18n.js"></script>
+    <script>
+        lucide.createIcons();
+        let userRole = '';
+
+        function loadConsultations() {
+            Api.get('consultation').then(data => {
+                if(!data) return;
+
+                if (userRole === 'FARMER') {
+                    const list = document.getElementById('myConsultations');
+                    list.innerHTML = '';
+                    if(data.length === 0) {
+                        list.innerHTML = `<div style="padding:4rem; text-align:center; background:var(--bg-alt); border-radius:24px;"><i data-lucide="message-square-off" style="width:48px; height:48px; color:var(--border); margin-bottom:1rem;"></i><p style="color:var(--text-muted); font-size:1.1rem;">You haven't initiated any technical queries yet.</p></div>`;
+                        return;
+                    }
+                    data.forEach(c => {
+                        const card = document.createElement('div');
+                        card.className = 'card-v2 reveal active';
+                        card.style.padding = '2.5rem';
+                        card.innerHTML = `
+                            <div class="flex-between" style="margin-bottom: 2rem;">
+                                <span style="background:${c.status === 'ANSWERED' ? 'var(--primary-light)' : 'var(--accent-light)'}; color:${c.status === 'ANSWERED' ? 'var(--primary)' : 'var(--accent)'}; padding:6px 14px; border-radius:8px; font-weight:800; font-size:0.8rem; text-transform:uppercase; letter-spacing:1px;">${c.status}</span>
+                                <div style="display:flex; align-items:center; gap:8px; color: var(--text-muted); font-weight:600; font-size:0.9rem;">
+                                    <i data-lucide="calendar" style="width:16px; height:16px;"></i>
+                                    <span>${new Date(c.createdAt).toLocaleDateString(undefined, {dateStyle:'long'})}</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; gap:15px; margin-bottom: 2rem;">
+                                <div style="color:var(--primary); font-weight:800; font-size:1.25rem;">Q:</div>
+                                <p style="font-size: 1.15rem; color: var(--bg-dark); font-weight: 700; line-height:1.6;">${c.question}</p>
+                            </div>
+                            ${c.answer ? `
+                                <div style="background: var(--bg-main); padding: 2rem; border-radius: 16px; border-left: 5px solid var(--primary); margin-left: 1rem;">
+                                    <div style="display:flex; align-items:center; gap:10px; margin-bottom: 1rem;">
+                                        <i data-lucide="check-circle" style="width:18px; height:18px; color:var(--primary);"></i>
+                                        <div style="font-weight: 800; color: var(--bg-dark); font-size: 0.95rem;">Technical Response from ${c.expertName}</div>
+                                    </div>
+                                    <p style="color: var(--text-main); line-height: 1.8; font-size:1.05rem;">${c.answer}</p>
+                                </div>
+                            ` : `
+                                <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: 12px; text-align: center; border: 1px dashed var(--border);">
+                                    <span style="color: var(--accent); font-weight: 700; font-size:0.95rem; display:flex; align-items:center; justify-content:center; gap:8px;"><i data-lucide="loader" style="width:16px; height:16px;"></i> Analyzing request...</span>
+                                </div>
+                            `}
+                        `;
+                        list.appendChild(card);
+                    });
+                    lucide.createIcons();
+                } else if (userRole === 'EXPERT' || userRole === 'ADMIN') {
+                    const list = document.getElementById('pendingConsultations');
+                    list.innerHTML = '';
+                    if(data.length === 0) {
+                        list.innerHTML = `<div style="padding:4rem; text-align:center; background:var(--bg-alt); border-radius:24px;"><i data-lucide="clipboard-check" style="width:48px; height:48px; color:var(--border); margin-bottom:1rem;"></i><p style="color:var(--text-muted); font-size:1.1rem;">Operational queue clear. No pending requests.</p></div>`;
+                        return;
+                    }
+                    data.forEach(c => {
+                        const card = document.createElement('div');
+                        card.className = 'card-v2 reveal active';
+                        card.style.padding = '2.5rem';
+                        card.innerHTML = `
+                            <div class="flex-between" style="margin-bottom: 2rem;">
+                                <div style="display:flex; align-items:center; gap:10px;">
+                                    <div style="width:36px; height:36px; border-radius:50%; background:var(--primary-light); display:flex; align-items:center; justify-content:center; color:var(--primary); font-weight:800;">${c.farmerName.charAt(0)}</div>
+                                    <span style="font-weight: 800; color: var(--bg-dark);">Farmer: ${c.farmerName} ${c.targetExpertId ? '<span style="color:var(--accent); font-size:0.7rem;">(DIRECT)</span>' : ''}</span>
+                                </div>
+                                <span style="color: var(--text-muted); font-weight:600; font-size:0.9rem;">${new Date(c.createdAt).toLocaleDateString(undefined, {dateStyle:'long'})}</span>
+                            </div>
+                            <div style="margin-bottom: 2.5rem; background:var(--bg-main); padding:1.5rem; border-radius:14px; border:1px solid var(--border);">
+                                <div style="color: var(--primary); font-weight: 800; font-size: 0.85rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:0.5rem;">Incoming Query</div>
+                                <p style="font-size: 1.1rem; line-height: 1.7; color:var(--bg-dark);">${c.question}</p>
+                            </div>
+                            <form class="answerForm">
+                                <input type="hidden" name="action" value="answer">
+                                <input type="hidden" name="consultationId" value="${c.consultationId}">
+                                <div class="form-group">
+                                    <label>Technical Advisory Response</label>
+                                    <textarea name="answer" placeholder="Provide clear, scientifically validated actionable steps for the farmer..." rows="4" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary" style="width: 100%; padding:1.1rem;" data-i18n="btn_submit">Transmit Technical Advice</button>
+                            </form>
+                        `;
+                        list.appendChild(card);
+                    });
+
+                    document.querySelectorAll('.answerForm').forEach(form => {
+                        form.addEventListener('submit', function(e) {
+                            e.preventDefault();
+                            const btn = this.querySelector('button');
+                            btn.disabled = true;
+                            btn.innerText = 'Transmitting Uplink...';
+                            const formData = App.Forms.serialize(this);
+                            Api.post('consultation', formData).then(resData => {
+                                if (resData && resData.success) {
+                                    App.UI.showToast('Advisory submitted successfully');
+                                    loadConsultations();
+                                } else {
+                                    btn.disabled = false;
+                                    btn.innerText = 'Transmit Technical Advice';
+                                }
+                            });
+                        });
+                    });
+                    lucide.createIcons();
+                }
+
+                I18n.applyLanguage(I18n.currentLang);
+            });
+        }
+
+        function loadExperts() {
+            Api.get('profile?type=experts').then(experts => {
+                const select = document.getElementById('expertSelect');
+                if(!experts) return;
+                experts.forEach(e => {
+                    const opt = document.createElement('option');
+                    opt.value = e.userId;
+                    opt.innerText = e.fullName;
+                    select.appendChild(opt);
+                });
+            });
+        }
+
+        Api.get('login').then(data => {
+            if (data && data.loggedIn) {
+                userRole = data.user.role;
+                document.getElementById('userInitial').innerText = data.user.fullName.charAt(0);
+                if (userRole === 'FARMER') {
+                    document.getElementById('farmerView').style.display = 'block';
+                    loadExperts();
+                } else if (userRole === 'EXPERT' || userRole === 'ADMIN') {
+                    document.getElementById('expertView').style.display = 'block';
+                }
+                if (data.user.role === 'ADMIN') document.getElementById('adminLink').style.display = 'flex';
+                loadConsultations();
+                loadNotifs();
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+
+        document.getElementById('askForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            App.UI.setLoading('askBtn', true);
+            const formData = App.Forms.serialize(this);
+            Api.post('consultation', formData).then(data => {
+                App.UI.setLoading('askBtn', false);
+                if (data && data.success) {
+                    App.UI.showToast('Advisory request transmitted');
+                    this.reset();
+                    loadConsultations();
+                }
+            });
+        });
+
+        function loadNotifs() {
+            Api.get('notifications').then(data => {
+                if(!data) return;
+                const badge = document.getElementById('notifBadge');
+                const unread = data.filter(n => !n.isRead).length;
+                if(unread > 0) { badge.style.display = 'flex'; badge.innerText = unread; }
+                const list = document.getElementById('notifList');
+                list.innerHTML = data.length === 0 ? `<div style="padding:2rem; text-align:center;"><i data-lucide="bell-off" style="width:32px; height:32px; color:var(--border); margin-bottom:1rem;"></i><p style="color:var(--text-muted); font-size:0.95rem;">No current pulses</p></div>` :
+                    data.map(n => `<div style="padding:1.25rem; border-bottom:1px solid var(--border); font-size:0.95rem; color:${n.isRead? 'var(--text-muted)':'var(--bg-dark)'}; ${!n.isRead ? 'font-weight:600; background:var(--primary-light); border-radius:12px; margin-bottom:0.5rem;' : ''}">${n.message}</div>`).join('');
+                lucide.createIcons();
+            });
+        }
+
+        function toggleNotifs(e) {
+            e.stopPropagation();
+            const drop = document.getElementById('notifDropdown');
+            const show = drop.style.display === 'none';
+            drop.style.display = show ? 'block' : 'none';
+            if(show) Api.post('notifications', '').then(() => document.getElementById('notifBadge').style.display = 'none');
+        }
+        document.addEventListener('click', () => document.getElementById('notifDropdown').style.display = 'none');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

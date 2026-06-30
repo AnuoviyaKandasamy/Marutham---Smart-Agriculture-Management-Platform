@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Forum | Marutham</title>
+    <link rel="stylesheet" href="css/style.css?v=12.0.5">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .voice-btn { background: var(--bg-alt); border: 1px solid var(--border); border-radius: 10px; padding: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        .voice-btn:hover { background: var(--primary-light); color: var(--primary); }
+        .voice-btn.listening { background: #fee2e2; color: #ef4444; border-color: #fca5a5; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body>
+<div class="dashboard-shell">
+    <aside class="sidebar-v2">
+        <div class="sidebar-header">
+            <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:12px;">
+                <div style="background:var(--primary); color:white; width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; box-shadow: 0 4px 12px rgba(5,150,105,0.2);">
+                    <i data-lucide="leaf" style="width:22px; height:22px;"></i>
+                </div>
+                <span style="font-weight:800; color:var(--bg-dark); font-size:1.5rem; letter-spacing:-1px;">Marutham</span>
+            </a>
+        </div>
+        <nav class="nav-group" style="flex:1; margin-top:2rem;">
+            <a href="dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_dashboard">Dashboard</span></a>
+            <a href="forum.html" class="nav-item active"><i data-lucide="message-square" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_forum">Community Forum</span></a>
+            <a href="prices.html" class="nav-item"><i data-lucide="line-chart" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_prices">Market Prices</span></a>
+            <a href="equipment.html" class="nav-item"><i data-lucide="tractor" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_equipment">Equipment Hub</span></a>
+            <a href="consultation.html" class="nav-item"><i data-lucide="graduation-cap" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_expert">Expert Help</span></a>
+            <a href="experts.html" class="nav-item"><i data-lucide="users" style="width:20px; height:20px;"></i><span data-i18n="nav_directory">Expert Directory</span></a>
+            <a href="profile.html" class="nav-item"><i data-lucide="user" style="width:20px; height:20px;"></i><span data-i18n="nav_profile">My Profile</span></a>
+            <a id="adminLink" href="admin.html" class="nav-item" style="display:none; color:var(--accent);"><i data-lucide="shield-alert" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_admin">Admin Control</span></a>
+        </nav>
+        <div style="padding:2rem; border-top:1px solid var(--border);">
+            <div style="margin-bottom:1.5rem;">
+                <select id="lang-switcher" style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--border); background:var(--bg-alt); font-weight:600; font-family:inherit; cursor:pointer;">
+                    <option value="en">English</option>
+                    <option value="ta">தமிழ்</option>
+                </select>
+            </div>
+            <a href="logout" class="nav-item" style="margin:0; border-radius:12px;">
+                <i data-lucide="log-out" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_signout">Sign Out</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content-v2">
+        <div class="top-nav">
+            <div style="font-size:1.25rem; font-weight:700; color:var(--bg-dark);" data-i18n="forum_title">Community Exchange</div>
+            <div style="display:flex; align-items:center; gap:1.5rem;">
+                <div style="position:relative;">
+                    <button onclick="toggleNotifs(event)" style="background:var(--bg-alt); border:none; cursor:pointer; width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; transition:0.3s;">
+                        <i data-lucide="bell" style="width:22px; height:22px; color:var(--text-main);"></i>
+                        <span id="notifBadge" class="notif-pill" style="display:none; position:absolute; top:-4px; right:-4px;">0</span>
+                    </button>
+                    <div id="notifDropdown" style="display:none; position:absolute; top:60px; right:0; width:360px; background:white; border:1px solid var(--border); border-radius:20px; box-shadow:var(--shadow-lg); z-index:1001; padding:1.5rem;">
+                        <div class="flex-between" style="padding-bottom:1rem; border-bottom:1px solid var(--border); margin-bottom:1rem;">
+                            <span style="font-weight:800; color:var(--bg-dark);" data-i18n="dash_notifs">Notifications</span>
+                            <i data-lucide="check-check" style="width:18px; height:18px; color:var(--primary); cursor:pointer;" onclick="markAllRead()"></i>
+                        </div>
+                        <div id="notifList" style="max-height:300px; overflow-y:auto;"></div>
+                    </div>
+                </div>
+                <div id="userInitial" style="width:44px; height:44px; background:linear-gradient(135deg, var(--primary), var(--success)); color:white; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.1rem; box-shadow:0 4px 12px rgba(5,150,105,0.2);">F</div>
+            </div>
+        </div>
+
+        <div class="content-body">
+            <div class="reveal active" style="margin-bottom:3rem;">
+                <h1 style="font-size:2.5rem; font-weight:800; color:var(--bg-dark); letter-spacing:-1.5px; margin-bottom:0.5rem;" data-i18n="forum_title">Community Forum</h1>
+                <p style="color:var(--text-muted); font-size:1.1rem;" data-i18n="forum_subtitle">Collaborative knowledge exchange for modern farming.</p>
+            </div>
+
+            <!-- New Post Form -->
+            <div class="card-v2 reveal active" style="max-width:900px; margin:0 auto 3rem; border-radius:24px;">
+                <h3 id="formTitle" style="margin-bottom:2rem; font-size:1.5rem; font-weight:800; color:var(--bg-dark);" data-i18n="forum_start_disc">Start a New Discussion</h3>
+                <form id="postForm">
+                    <input type="hidden" name="postId" id="postId">
+                    <div style="display:grid; grid-template-columns:2fr 1fr; gap:2rem;">
+                        <div class="form-group">
+                            <label data-i18n="forum_disc_title">Discussion Title</label>
+                            <div style="position:relative;">
+                                <input type="text" name="title" id="postTitle" placeholder="e.g. Best organic fertilizer for Rice?" required style="padding-right:50px;" data-i18n="forum_disc_title">
+                                <button type="button" class="voice-btn" onclick="startVoice('postTitle', this)" style="position:absolute; right:8px; top:50%; transform:translateY(-50%);">
+                                    <i data-lucide="mic" style="width:18px; height:18px;"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="forum_topic_cat">Topic Category</label>
+                            <select name="category">
+                                <option value="General" data-i18n="forum_all_cats">General Discussion</option>
+                                <option value="Rice">Rice Cultivation</option>
+                                <option value="Wheat">Wheat Production</option>
+                                <option value="Pests">Pests &amp; Diseases</option>
+                                <option value="Irrigation">Irrigation Systems</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="label_description">Content</label>
+                        <div style="position:relative;">
+                            <textarea name="content" id="postContent" placeholder="Describe your topic or question in detail..." rows="4" required style="padding-right:50px;" data-i18n="label_description"></textarea>
+                            <button type="button" class="voice-btn" onclick="startVoice('postContent', this)" style="position:absolute; right:12px; bottom:12px;">
+                                <i data-lucide="mic" style="width:18px; height:18px;"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:1.5rem; margin-top:1rem;">
+                        <button type="submit" class="btn btn-primary" id="postSubmitBtn" style="padding:1rem 3rem;" data-i18n="forum_publish_btn">Publish Discussion</button>
+                        <button type="button" class="btn btn-outline" id="cancelEditBtn" style="display:none;" onclick="cancelEdit()" data-i18n="btn_cancel">Discard Changes</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="reveal active" style="max-width:900px; margin:0 auto 1.5rem; background:white; padding:1.25rem 2rem; border-radius:20px; border:1px solid var(--border); display:flex; align-items:center; gap:1rem;">
+                <i data-lucide="search" style="width:20px; height:20px; color:var(--primary); flex-shrink:0;"></i>
+                <input type="text" id="searchInput" placeholder="Search discussions by keyword..." style="flex:1; border:none; outline:none; font-size:1rem; background:transparent;" oninput="loadPosts()">
+            </div>
+
+            <div class="reveal active" style="max-width:900px; margin:0 auto 3rem; background:white; padding:1.25rem 2rem; border-radius:20px; border:1px solid var(--border); display:flex; align-items:center; gap:2rem;">
+                <div style="display:flex; align-items:center; gap:10px; color:var(--text-main); font-weight:800; font-size:0.9rem; text-transform:uppercase; white-space:nowrap;" data-i18n="forum_filter_label">
+                    <i data-lucide="filter" style="width:18px; height:18px; color:var(--primary);"></i> Filter By Topic
+                </div>
+                <select id="categoryFilter" onchange="loadPosts()" style="width:100%; max-width:300px; border-radius:12px;">
+                    <option value="" data-i18n="forum_all_cats">All Categories</option>
+                    <option value="General">General Discussion</option>
+                    <option value="Rice">Rice Cultivation</option>
+                    <option value="Wheat">Wheat Production</option>
+                    <option value="Pests">Pests &amp; Diseases</option>
+                    <option value="Irrigation">Irrigation Systems</option>
+                </select>
+            </div>
+
+            <div id="postsList" class="reveal active" style="display:flex; flex-direction:column; gap:3rem; max-width:900px; margin:0 auto;"></div>
+        </div>
+    </main>
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/i18n.js"></script>
+<script>
+    lucide.createIcons();
+    let currentUserId = null;
+    let currentRole = null;
+
+    Api.get('login').then(data => {
+        if (data && data.loggedIn) {
+            currentUserId = data.user.userId;
+            currentRole   = data.user.role;
+            document.getElementById('userInitial').innerText = data.user.fullName.charAt(0);
+            if (data.user.role === 'ADMIN') document.getElementById('adminLink').style.display = 'flex';
+        } else {
+            window.location.href = 'login.html';
+            return;
+        }
+        loadPosts();
+        loadNotifs();
+    });
+
+    function startVoice(targetId, btn) {
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SR) { App.UI.showToast('Voice typing not supported in this browser.', 'error'); return; }
+        const recognition = new SR();
+        const lang = document.getElementById('lang-switcher');
+        recognition.lang = lang && lang.value === 'ta' ? 'ta-IN' : 'en-US';
+        recognition.interimResults = false;
+        recognition.onstart  = () => { btn.classList.add('listening'); App.UI.showToast('Listening...', 'info'); };
+        recognition.onresult = e => {
+            const t = e.results[0][0].transcript;
+            const el = document.getElementById(targetId);
+            el.value = el.value ? el.value + ' ' + t : t;
+        };
+        recognition.onerror  = () => { btn.classList.remove('listening'); App.UI.showToast('Voice recognition error.', 'error'); };
+        recognition.onend    = () => btn.classList.remove('listening');
+        recognition.start();
+    }
+
+    function loadPosts() {
+        const search   = document.getElementById('searchInput') ? document.getElementById('searchInput').value.trim() : '';
+        const category = document.getElementById('categoryFilter').value;
+        let url = 'posts';
+        if (search)        url = 'posts?search='   + encodeURIComponent(search);
+        else if (category) url = 'posts?category=' + encodeURIComponent(category);
+
+        Api.get(url).then(posts => {
+            if (!posts) return;
+            const list = document.getElementById('postsList');
+            if (posts.length === 0) {
+                list.innerHTML = `<div style="text-align:center; padding:4rem; color:var(--text-muted); background:white; border-radius:24px; border:1px dashed var(--border);"><p style="font-size:1.1rem;">No discussions found.</p></div>`;
+                return;
+            }
+            list.innerHTML = '';
+            posts.forEach(post => {
+                const isOwner  = currentUserId === post.userId;
+                const canDelete = isOwner || currentRole === 'ADMIN';
+                const card = document.createElement('div');
+                card.className = 'card-v2';
+                card.style.padding = '3rem';
+                const safeTitle    = escHtml(post.title);
+                const safeContent  = escHtml(post.content);
+                const safeUsername = escHtml(post.username);
+                const safeCategory = escHtml(post.category);
+                card.innerHTML = `
+                    <div class="flex-between" style="margin-bottom:2rem;">
+                        <span style="background:var(--primary-light); color:var(--primary); padding:6px 14px; border-radius:8px; font-weight:800; font-size:0.8rem; text-transform:uppercase; letter-spacing:1px;">${safeCategory}</span>
+                        <div style="display:flex; align-items:center; gap:8px; color:var(--text-muted); font-weight:600; font-size:0.9rem;">
+                            <i data-lucide="clock" style="width:16px; height:16px;"></i>
+                            <span>${new Date(post.createdAt).toLocaleDateString(undefined, {dateStyle:'long'})}</span>
+                        </div>
+                    </div>
+                    <h3 style="margin-bottom:1.25rem; color:var(--bg-dark); font-size:1.75rem; font-weight:800; letter-spacing:-0.5px; line-height:1.2;">${safeTitle}</h3>
+                    <p style="color:var(--text-main); margin-bottom:2.5rem; font-size:1.1rem; line-height:1.8;">${safeContent}</p>
+                    <div class="flex-between" style="padding-top:2rem; border-top:1px solid var(--border);">
+                        <div style="display:flex; align-items:center; gap:1.5rem;">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <div style="width:36px; height:36px; border-radius:50%; background:var(--bg-alt); display:flex; align-items:center; justify-content:center; color:var(--primary); font-weight:800;">${safeUsername.charAt(0).toUpperCase()}</div>
+                                <span style="font-weight:800; font-size:0.95rem; color:var(--bg-dark);">@${safeUsername}</span>
+                            </div>
+                            <button class="btn btn-outline" style="padding:0.6rem 1.4rem; border-radius:12px; font-size:0.9rem; border-color:var(--border);" onclick="toggleLike(${post.postId}, this)">
+                                <i data-lucide="thumbs-up" style="width:18px; height:18px; ${post.likedByCurrentUser ? 'fill:var(--primary); stroke:var(--primary);' : 'color:var(--text-muted);'}"></i>
+                                <span class="like-count" style="font-weight:800; margin-left:8px;">${post.likeCount}</span>
+                            </button>
+                        </div>
+                        <div style="display:flex; gap:1rem;">
+                            ${isOwner  ? `<button class="btn btn-outline" style="padding:0.6rem 1.25rem; font-size:0.85rem;" data-post='${JSON.stringify(post).replace(/'/g,"&#39;")}' onclick="startEditFromBtn(this)">Edit</button>` : ''}
+                            ${canDelete ? `<button class="btn btn-outline" style="padding:0.6rem 1.25rem; font-size:0.85rem; border-color:#fee2e2; color:#ef4444;" onclick="deletePost(${post.postId})">Delete</button>` : ''}
+                        </div>
+                    </div>
+                    <div style="margin-top:3rem; background:var(--bg-main); padding:2rem; border-radius:20px; border:1.5px solid var(--border);">
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:2rem;">
+                            <i data-lucide="messages-square" style="width:20px; height:20px; color:var(--primary);"></i>
+                            <h4 style="font-size:1rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--bg-dark);">Discussion Thread</h4>
+                        </div>
+                        <div id="comments-${post.postId}" style="display:flex; flex-direction:column; gap:1.5rem; margin-bottom:2rem;">
+                            <small style="color:var(--text-muted);">Loading replies...</small>
+                        </div>
+                        <form class="commentForm" data-postid="${post.postId}">
+                            <div style="display:flex; gap:1rem; position:relative;">
+                                <input type="text" name="content" id="comment-${post.postId}" placeholder="Share your insights..." required style="flex:1; border-radius:14px; padding:1rem 4rem 1rem 1.5rem;">
+                                <button type="button" class="voice-btn" onclick="startVoice('comment-${post.postId}', this)" style="position:absolute; right:110px; top:50%; transform:translateY(-50%);">
+                                    <i data-lucide="mic" style="width:18px; height:18px;"></i>
+                                </button>
+                                <button type="submit" class="btn btn-primary" style="padding:1rem 2rem; border-radius:14px;">Reply</button>
+                            </div>
+                        </form>
+                    </div>
+                `;
+                list.appendChild(card);
+                loadComments(post.postId);
+            });
+            I18n.applyLanguage(I18n.currentLang);
+            lucide.createIcons();
+        });
+    }
+
+    function escHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function loadComments(postId) {
+        Api.get('comments?postId=' + postId).then(comments => {
+            if (!comments) return;
+            const div = document.getElementById('comments-' + postId);
+            if (!div) return;
+            if (comments.length === 0) {
+                div.innerHTML = `<div style="text-align:center; padding:1.5rem; border:1px dashed var(--border); border-radius:12px; color:var(--text-muted); font-size:0.95rem; font-style:italic;">No responses yet. Be the first!</div>`;
+            } else {
+                div.innerHTML = comments.map(c => `
+                    <div style="background:white; padding:1.25rem; border-radius:14px; border:1px solid var(--border); box-shadow:var(--shadow-sm);">
+                        <div style="margin-bottom:8px; display:flex; align-items:center; gap:8px;">
+                            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); display:flex; align-items:center; justify-content:center; color:var(--primary); font-size:0.7rem; font-weight:800;">${escHtml(c.username).charAt(0).toUpperCase()}</div>
+                            <span style="font-weight:800; font-size:0.85rem; color:var(--bg-dark);">@${escHtml(c.username)}</span>
+                        </div>
+                        <span style="color:var(--text-main); font-size:1rem; line-height:1.6; display:block; padding-left:2rem;">${escHtml(c.content)}</span>
+                    </div>
+                `).join('');
+            }
+        });
+    }
+
+    function toggleLike(postId, btn) {
+        const fd = new URLSearchParams();
+        fd.append('postId', postId);
+        Api.post('likes', fd).then(data => {
+            if (data && data.success) {
+                const icon = btn.querySelector('i');
+                if (icon) {
+                    icon.style.fill   = data.liked ? 'var(--primary)' : 'none';
+                    icon.style.stroke = data.liked ? 'var(--primary)' : 'var(--text-muted)';
+                }
+                btn.querySelector('.like-count').innerText = data.likeCount;
+            }
+        });
+    }
+
+    function startEditFromBtn(btn) {
+        const post = JSON.parse(btn.getAttribute('data-post'));
+        startEdit(post);
+    }
+    function startEdit(post) {
+        document.getElementById('formTitle').innerText = 'Edit Discussion';
+        document.getElementById('postId').value = post.postId;
+        document.querySelector('#postForm [name="title"]').value    = post.title;
+        document.querySelector('#postForm [name="category"]').value = post.category;
+        document.querySelector('#postForm [name="content"]').value  = post.content;
+        document.getElementById('postSubmitBtn').innerText = 'Update Discussion';
+        document.getElementById('cancelEditBtn').style.display = 'inline-block';
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+    function cancelEdit() {
+        document.getElementById('postForm').reset();
+        document.getElementById('postId').value = '';
+        document.getElementById('formTitle').innerText = I18n.t('forum_start_disc');
+        document.getElementById('postSubmitBtn').innerText = I18n.t('forum_publish_btn');
+        document.getElementById('cancelEditBtn').style.display = 'none';
+    }
+
+    function deletePost(postId) {
+        if (!confirm('Permanently delete this discussion?')) return;
+        const fd = new URLSearchParams();
+        fd.append('action', 'delete');
+        fd.append('postId', postId);
+        Api.post('posts', fd).then(data => {
+            if (data && data.success) { App.UI.showToast('Discussion deleted'); loadPosts(); }
+        });
+    }
+
+    document.getElementById('postForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (!App.Forms.validate('postForm')) return;
+        const postId   = document.getElementById('postId').value;
+        const formData = App.Forms.serialize(this);
+        if (postId) formData.set('action', 'update');
+        App.UI.setLoading('postSubmitBtn', true);
+        Api.post('posts', formData).then(data => {
+            App.UI.setLoading('postSubmitBtn', false);
+            if (data && data.success) {
+                App.UI.showToast(postId ? 'Discussion updated!' : 'Discussion published!', 'success');
+                cancelEdit();
+                loadPosts();
+            }
+        });
+    });
+
+    document.addEventListener('submit', function(e) {
+        if (!e.target.classList.contains('commentForm')) return;
+        e.preventDefault();
+        const postId   = e.target.dataset.postid;
+        const formData = App.Forms.serialize(e.target);
+        formData.append('postId', postId);
+        Api.post('comments', formData).then(data => {
+            if (data && data.success) { e.target.reset(); loadComments(postId); }
+        });
+    });
+
+    function loadNotifs() {
+        Api.get('notifications').then(data => {
+            if (!data) return;
+            const badge = document.getElementById('notifBadge');
+            const unread = data.filter(n => !n.isRead).length;
+            if (unread > 0) { badge.style.display = 'flex'; badge.innerText = unread; }
+            const list = document.getElementById('notifList');
+            list.innerHTML = data.length === 0
+                ? `<div style="padding:2rem; text-align:center; color:var(--text-muted);">No notifications</div>`
+                : data.map(n => `<div style="padding:1.25rem; border-bottom:1px solid var(--border); font-size:0.95rem; color:${n.isRead ? 'var(--text-muted)' : 'var(--bg-dark)'}; ${!n.isRead ? 'font-weight:600; background:var(--primary-light); border-radius:12px; margin-bottom:0.5rem;' : ''}">${escHtml(n.message)}</div>`).join('');
+            lucide.createIcons();
+        });
+    }
+    function markAllRead() {
+        Api.post('notifications', new URLSearchParams()).then(() => {
+            document.getElementById('notifBadge').style.display = 'none';
+            loadNotifs();
+        });
+    }
+    function toggleNotifs(e) {
+        e.stopPropagation();
+        const drop = document.getElementById('notifDropdown');
+        const show  = drop.style.display === 'none';
+        drop.style.display = show ? 'block' : 'none';
+    }
+    document.addEventListener('click', () => document.getElementById('notifDropdown').style.display = 'none');
+
+    const observer = new IntersectionObserver(entries => entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); }), { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

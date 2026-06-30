@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platform Governance | Marutham Admin</title>
+    <link rel="stylesheet" href="css/style.css?v=12.0.5">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
+        .stat-card { background: white; padding: 1.5rem; border-radius: 20px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); transition: 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+
+        .admin-tabs { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+        .tab-btn { padding: 0.75rem 1.5rem; border: none; background: none; font-weight: 800; color: var(--text-muted); cursor: pointer; border-radius: 12px; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+        .tab-btn.active { background: var(--primary-light); color: var(--primary); }
+        .tab-btn i { width: 18px; height: 18px; }
+
+        .management-card { background: white; border-radius: 24px; border: 1px solid var(--border); overflow: hidden; box-shadow: var(--shadow-sm); display: none; }
+        .management-card.active { display: block; animation: fadeIn 0.4s ease-out; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table th { background: var(--bg-alt); padding: 1.25rem 1.5rem; text-align: left; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 800; letter-spacing: 1px; }
+        .data-table td { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+
+        .role-badge { padding: 4px 10px; border-radius: 50px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
+        .role-farmer { background: #dcfce7; color: #166534; }
+        .role-expert { background: #dbeafe; color: #1e40af; }
+        .role-admin { background: #fee2e2; color: #991b1b; }
+
+        .action-btn { width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--border); background: white; cursor: pointer; display: inline-flex; align-items: center; justify-content:center; transition: 0.2s; }
+        .action-btn:hover { background: var(--bg-alt); }
+        .action-btn.delete:hover { border-color: #fca5a5; color: #ef4444; background: #fff5f5; }
+
+        .pulse { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #22c55e; margin-right: 6px; box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); animation: pulse-green 2s infinite; }
+        @keyframes pulse-green { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
+
+        .status-online { color: #166534; font-weight: 800; display: flex; align-items: center; font-size: 0.75rem; }
+    </style>
+</head>
+<body>
+    <div class="dashboard-shell">
+        <aside class="sidebar-v2">
+            <div class="sidebar-header">
+                <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:12px;">
+                    <div style="background:var(--primary); color:white; width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);">
+                        <i data-lucide="shield-check" style="width:22px; height:22px;"></i>
+                    </div>
+                    <span style="font-weight:800; color:var(--bg-dark); font-size:1.5rem; letter-spacing:-1px;">Marutham Admin</span>
+                </a>
+            </div>
+            <nav class="nav-group" style="flex:1; margin-top: 2rem;">
+                <a href="dashboard.html" class="nav-item">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span data-i18n="dash_nav_dashboard">User Dashboard</span>
+                </a>
+                <a href="admin.html" class="nav-item active">
+                    <i data-lucide="shield"></i>
+                    <span data-i18n="dash_nav_admin">Governance</span>
+                </a>
+                <a href="prices.html" class="nav-item">
+                    <i data-lucide="line-chart"></i>
+                    <span data-i18n="dash_nav_prices">Market Control</span>
+                </a>
+                <a href="forum.html" class="nav-item">
+                    <i data-lucide="message-square"></i>
+                    <span data-i18n="dash_nav_forum">Community</span>
+                </a>
+            </nav>
+            <div style="padding: 2rem; border-top:1px solid var(--border);">
+                <div style="margin-bottom: 1.5rem;">
+                    <select id="lang-switcher" style="width:100%; padding: 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-alt); font-weight: 600; font-family: inherit; cursor: pointer;">
+                        <option value="en">English</option>
+                        <option value="ta">தமிழ்</option>
+                    </select>
+                </div>
+                <a href="logout" class="nav-item" style="margin:0; border-radius:12px;">
+                    <i data-lucide="log-out"></i>
+                    <span data-i18n="dash_nav_signout">Sign Out</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content-v2">
+            <div class="top-nav">
+                <div style="font-size:1.25rem; font-weight:700; color:var(--bg-dark);" data-i18n="dash_nav_admin">Platform Governance</div>
+                <div style="display:flex; align-items:center; gap:1.5rem;">
+                    <div style="background:var(--bg-alt); padding:8px 16px; border-radius:12px; font-size:0.85rem; font-weight:800; color:var(--primary); display:flex; align-items:center;">
+                        <span class="pulse"></span> <span id="activeUserCount">0</span> Sessions Active
+                    </div>
+                    <div style="width:44px; height:44px; background:linear-gradient(135deg, var(--primary), var(--success)); color:white; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.1rem;" id="adminInitial">A</div>
+                </div>
+            </div>
+
+            <div class="content-body">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="text-muted" style="font-size:0.7rem; font-weight:800; text-transform:uppercase; margin-bottom:0.5rem; letter-spacing:1px;" data-i18n="nav_directory">Network Scale</div>
+                        <div style="font-size:2rem; font-weight:800; color:var(--bg-dark);" id="totalUsers">0</div>
+                        <div style="font-size:0.85rem; color:var(--text-muted); font-weight:600;" data-i18n="stat_farmers">Registered Members</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="text-muted" style="font-size:0.7rem; font-weight:800; text-transform:uppercase; margin-bottom:0.5rem; letter-spacing:1px;" data-i18n="dash_nav_forum">Community Pulse</div>
+                        <div style="font-size:2rem; font-weight:800; color:var(--primary);" id="totalPosts">0</div>
+                        <div style="font-size:0.85rem; color:var(--text-muted); font-weight:600;" data-i18n="dash_nav_forum">Discussion Posts</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="text-muted" style="font-size:0.7rem; font-weight:800; text-transform:uppercase; margin-bottom:0.5rem; letter-spacing:1px;" data-i18n="sol_machinery_title">Active Assets</div>
+                        <div style="font-size:2rem; font-weight:800; color:var(--accent);" id="totalEquipment">0</div>
+                        <div style="font-size:0.85rem; color:var(--text-muted); font-weight:600;" data-i18n="dash_market_uptrend">Machinery Listings</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="text-muted" style="font-size:0.7rem; font-weight:800; text-transform:uppercase; margin-bottom:0.5rem; letter-spacing:1px;" data-i18n="dash_expert_advisory">Advisory Flow</div>
+                        <div style="font-size:2rem; font-weight:800; color:#1e40af;" id="totalConsultations">0</div>
+                        <div style="font-size:0.85rem; color:var(--text-muted); font-weight:600;" data-i18n="dash_expert_advisory">Expert Consultations</div>
+                    </div>
+                </div>
+
+                <div class="admin-tabs">
+                    <button class="tab-btn active" onclick="switchTab('users', this)"><i data-lucide="users"></i> <span data-i18n="stat_experts">Members</span></button>
+                    <button class="tab-btn" onclick="switchTab('equipment', this)"><i data-lucide="tractor"></i> <span data-i18n="dash_nav_equipment">Equipment</span></button>
+                    <button class="tab-btn" onclick="switchTab('posts', this)"><i data-lucide="message-square"></i> Moderation</button>
+                    <button class="tab-btn" onclick="switchTab('logs', this)"><i data-lucide="activity"></i> Audit Logs</button>
+                </div>
+
+                <div id="users-tab" class="management-card active">
+                    <div style="padding: 1.5rem; border-bottom: 1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+                        <h2 style="font-size:1.1rem; font-weight:800; color:var(--bg-dark);" data-i18n="nav_directory">Membership Directory</h2>
+                        <select id="roleFilter" class="btn btn-outline" style="padding:8px 16px; font-size:0.85rem;" onchange="loadUsers()">
+                            <option value="ALL" data-i18n="forum_all_cats">All Roles</option>
+                            <option value="FARMER" data-i18n="role_farmer">Farmers</option>
+                            <option value="EXPERT" data-i18n="role_expert">Experts</option>
+                            <option value="ADMIN">Admins</option>
+                        </select>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th data-i18n="login_identity">Identity</th>
+                                <th data-i18n="label_role">Role</th>
+                                <th data-i18n="footer_contact_title">Contact</th>
+                                <th data-i18n="workflow_title_1">Onboarding</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div id="equipment-tab" class="management-card">
+                    <div style="padding: 1.5rem; border-bottom: 1px solid var(--border);">
+                        <h2 style="font-size:1.1rem; font-weight:800; color:var(--bg-dark);" data-i18n="dash_nav_equipment">Machinery & Infrastructure</h2>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th data-i18n="equip_placeholder_name">Equipment Name</th>
+                                <th>Proprietor</th>
+                                <th data-i18n="expected_price">Daily Rate</th>
+                                <th>Market Status</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="equipmentTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div id="posts-tab" class="management-card">
+                    <div style="padding: 1.5rem; border-bottom: 1px solid var(--border);">
+                        <h2 style="font-size:1.1rem; font-weight:800; color:var(--bg-dark);">Content Moderation</h2>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th data-i18n="forum_disc_title">Topic Title</th>
+                                <th>Author</th>
+                                <th data-i18n="forum_topic_cat">Category</th>
+                                <th>Engagement</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="postsTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div id="logs-tab" class="management-card">
+                    <div style="padding: 1.5rem; border-bottom: 1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+                        <h2 style="font-size:1.1rem; font-weight:800; color:var(--bg-dark);">Audit Trail & Activity Logs</h2>
+                        <button class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem;" onclick="loadLogs()">Refresh Trace</button>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th data-i18n="label_username">Origin User</th>
+                                <th>Action Event</th>
+                                <th data-i18n="label_description">Contextual Details</th>
+                                <th>Network IP</th>
+                                <th>Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/i18n.js"></script>
+    <script>
+        lucide.createIcons();
+
+        Api.get('login').then(data => {
+            if (!data || !data.loggedIn || data.user.role !== 'ADMIN') {
+                window.location.href = 'login.html'; return;
+            }
+            document.getElementById('adminInitial').innerText = data.user.fullName.charAt(0);
+            loadStats();
+            loadUsers();
+            loadEquipment();
+            loadPosts();
+            loadLogs();
+        });
+
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.management-card').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId + '-tab').classList.add('active');
+            btn.classList.add('active');
+        }
+
+        function loadStats() {
+            Api.get('admin?type=stats').then(stats => {
+                if(!stats) return;
+                document.getElementById('totalUsers').innerText = stats.totalUsers || 0;
+                document.getElementById('totalPosts').innerText = stats.totalPosts || 0;
+                document.getElementById('totalEquipment').innerText = stats.totalEquipment || 0;
+                document.getElementById('totalConsultations').innerText = stats.totalConsultations || 0;
+            });
+            Api.get('admin?type=active_users').then(active => {
+                if(active) document.getElementById('activeUserCount').innerText = active.length;
+            });
+        }
+
+        function loadUsers() {
+            const role = document.getElementById('roleFilter').value;
+            Api.get(`admin?type=users&role=${role}`).then(users => {
+                const tbody = document.getElementById('userTableBody');
+                if(!users || users.length === 0) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:2rem;">No members found.</td></tr>'; return; }
+                tbody.innerHTML = users.map(u => `
+                    <tr>
+                        <td>
+                            <div style="font-weight:800; color:var(--bg-dark);">${u.fullName}</div>
+                            <div class="text-muted" style="font-size:0.8rem; font-weight:600;">@${u.username}</div>
+                        </td>
+                        <td><span class="role-badge role-${u.role.toLowerCase()}">${u.role}</span></td>
+                        <td>
+                            <div style="font-weight:600; font-size:0.85rem;">${u.email}</div>
+                            <div class="text-muted" style="font-size:0.8rem;">${u.phone || '—'}</div>
+                        </td>
+                        <td><span class="text-muted" style="font-weight:600; font-size:0.85rem;">${new Date(u.createdAt).toLocaleDateString()}</span></td>
+                        <td style="text-align:right;">
+                            <button class="action-btn" title="Change Role" onclick="changeRole(${u.userId}, '${u.role}')"><i data-lucide="shield-plus" style="width:16px;"></i></button>
+                            <button class="action-btn delete" title="Revoke Access" onclick="deleteUser(${u.userId})"><i data-lucide="trash-2" style="width:16px;"></i></button>
+                        </td>
+                    </tr>
+                `).join('');
+
+                I18n.applyLanguage(I18n.currentLang);
+                lucide.createIcons();
+            });
+        }
+
+        function loadEquipment() {
+            Api.get('admin?type=equipment').then(items => {
+                const tbody = document.getElementById('equipmentTableBody');
+                if(!items || items.length === 0) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:2rem;">No asset listings.</td></tr>'; return; }
+                tbody.innerHTML = items.map(i => `
+                    <tr>
+                        <td style="font-weight:800; color:var(--bg-dark);">${i.name}</td>
+                        <td style="font-weight:700; color:var(--primary); font-size:0.9rem;">${i.ownerName}</td>
+                        <td style="font-weight:800;">₹${i.pricePerDay}</td>
+                        <td><span class="role-badge" style="background:${i.availabilityStatus?'#dcfce7':'#fef3c7'}; color:${i.availabilityStatus?'#166534':'#92400e'}">${i.availabilityStatus?'AVAILABLE':'RENTED'}</span></td>
+                        <td style="text-align:right;">
+                            <button class="action-btn delete" onclick="deleteEquipment(${i.equipmentId})"><i data-lucide="trash-2" style="width:16px;"></i></button>
+                        </td>
+                    </tr>
+                `).join('');
+
+                I18n.applyLanguage(I18n.currentLang);
+                lucide.createIcons();
+            });
+        }
+
+        function loadPosts() {
+            Api.get('admin?type=posts').then(posts => {
+                const tbody = document.getElementById('postsTableBody');
+                if(!posts || posts.length === 0) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:2rem;">No community posts.</td></tr>'; return; }
+                tbody.innerHTML = posts.map(p => `
+                    <tr>
+                        <td style="font-weight:700; color:var(--bg-dark);">${p.title}</td>
+                        <td style="font-weight:600; color:var(--text-muted); font-size:0.85rem;">@${p.username}</td>
+                        <td><span class="role-badge" style="background:var(--bg-alt); color:var(--text-main);">${p.category}</span></td>
+                        <td style="font-size:0.85rem; font-weight:700; color:var(--text-muted);">${p.likeCount} Likes • ${p.commentCount} Comments</td>
+                        <td style="text-align:right;">
+                            <button class="action-btn delete" onclick="deletePost(${p.postId})"><i data-lucide="trash-2" style="width:16px;"></i></button>
+                        </td>
+                    </tr>
+                `).join('');
+
+                I18n.applyLanguage(I18n.currentLang);
+                lucide.createIcons();
+            });
+        }
+
+        function loadLogs() {
+            Api.get('admin?type=logs&limit=50').then(logs => {
+                const tbody = document.getElementById('logsTableBody');
+                if(!logs || logs.length === 0) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:2rem;">No log data.</td></tr>'; return; }
+                tbody.innerHTML = logs.map(l => `
+                    <tr>
+                        <td style="font-weight:800; color:var(--bg-dark); font-size:0.85rem;">${l.username}</td>
+                        <td><span style="background:var(--primary-light); color:var(--primary); padding:3px 8px; border-radius:6px; font-size:0.7rem; font-weight:800; text-transform:uppercase;">${l.action}</span></td>
+                        <td style="color:var(--text-muted); font-size:0.85rem; font-weight:600;">${l.description}</td>
+                        <td style="color:var(--text-muted); font-size:0.8rem; font-family:monospace;">${l.ipAddress}</td>
+                        <td style="color:var(--text-muted); font-size:0.85rem;">${new Date(l.createdAt).toLocaleString()}</td>
+                    </tr>
+                `).join('');
+
+                I18n.applyLanguage(I18n.currentLang);
+            });
+        }
+
+        function deleteUser(id) {
+            if(!confirm("Are you sure you want to permanently revoke this member's access?")) return;
+            Api.post('admin', new URLSearchParams({action: 'deleteUser', userId: id})).then(res => {
+                if(res && res.success) { App.UI.showToast("Member removed", "success"); loadStats(); loadUsers(); }
+            });
+        }
+
+        function changeRole(id, current) {
+            const next = current === 'FARMER' ? 'EXPERT' : (current === 'EXPERT' ? 'ADMIN' : 'FARMER');
+            if(!confirm(`Promote/Demote member to ${next}?`)) return;
+            Api.post('admin', new URLSearchParams({action: 'updateRole', userId: id, role: next})).then(res => {
+                if(res && res.success) { App.UI.showToast("Role updated", "success"); loadUsers(); }
+            });
+        }
+
+        function deleteEquipment(id) {
+            if(!confirm("Remove this equipment from marketplace?")) return;
+            Api.post('admin', new URLSearchParams({action: 'deleteEquipment', equipmentId: id})).then(res => {
+                if(res && res.success) { App.UI.showToast("Asset removed", "success"); loadStats(); loadEquipment(); }
+            });
+        }
+
+        function deletePost(id) {
+            if(!confirm("Delete this discussion thread?")) return;
+            Api.post('admin', new URLSearchParams({action: 'deletePost', postId: id})).then(res => {
+                if(res && res.success) { App.UI.showToast("Post deleted", "success"); loadStats(); loadPosts(); }
+            });
+        }
+    </script>
+</body>
+</html>

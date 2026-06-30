@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Intelligence | Marutham</title>
+    <link rel="stylesheet" href="css/style.css?v=12.0.5">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .voice-btn { background:var(--bg-alt); border:1px solid var(--border); border-radius:10px; padding:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:0.3s; }
+        .voice-btn:hover { background:var(--primary-light); color:var(--primary); }
+        .voice-btn.listening { background:#fee2e2; color:#ef4444; border-color:#fca5a5; animation:pulse 1.5s infinite; }
+        @keyframes pulse { 0%{opacity:1}50%{opacity:0.6}100%{opacity:1} }
+        .search-container { display:flex; gap:1rem; max-width:600px; margin-bottom:2rem; position:relative; }
+        .search-input { flex:1; padding:1rem 3.5rem 1rem 1.5rem; border-radius:15px; border:1px solid var(--border); font-size:1rem; outline:none; transition:0.3s; }
+        .search-input:focus { border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-light); }
+        .price-request-card { background:white; border-radius:24px; padding:2rem; border:1px solid var(--border); margin-top:3rem; }
+        .status-badge { padding:4px 10px; border-radius:50px; font-size:0.75rem; font-weight:700; text-transform:uppercase; }
+        .status-pending   { background:#fef3c7; color:#92400e; }
+        .status-processed { background:#d1fae5; color:#065f46; }
+        .chart-container  { background:white; border-radius:24px; padding:1.5rem; border:1px solid var(--border); margin-bottom:2rem; height:350px; }
+    </style>
+</head>
+<body>
+<div class="dashboard-shell">
+    <aside class="sidebar-v2">
+        <div class="sidebar-header">
+            <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:12px;">
+                <div style="background:var(--primary); color:white; width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(5,150,105,0.2);">
+                    <i data-lucide="leaf" style="width:22px; height:22px;"></i>
+                </div>
+                <span style="font-weight:800; color:var(--bg-dark); font-size:1.5rem; letter-spacing:-1px;">Marutham</span>
+            </a>
+        </div>
+        <nav class="nav-group" style="flex:1; margin-top:2rem;">
+            <a href="dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_dashboard">Dashboard</span></a>
+            <a href="forum.html" class="nav-item"><i data-lucide="message-square" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_forum">Community Forum</span></a>
+            <a href="prices.html" class="nav-item active"><i data-lucide="line-chart" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_prices">Market Prices</span></a>
+            <a href="equipment.html" class="nav-item"><i data-lucide="tractor" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_equipment">Equipment Hub</span></a>
+            <a href="consultation.html" class="nav-item"><i data-lucide="graduation-cap" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_expert">Expert Help</span></a>
+            <a href="experts.html" class="nav-item"><i data-lucide="users" style="width:20px; height:20px;"></i><span data-i18n="nav_directory">Expert Directory</span></a>
+            <a href="profile.html" class="nav-item"><i data-lucide="user" style="width:20px; height:20px;"></i><span data-i18n="nav_profile">My Profile</span></a>
+            <a id="adminLink" href="admin.html" class="nav-item" style="display:none; color:var(--accent);"><i data-lucide="shield-alert" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_admin">Admin Control</span></a>
+        </nav>
+        <div style="padding:2rem; border-top:1px solid var(--border);">
+            <div style="margin-bottom:1.5rem;">
+                <select id="lang-switcher" style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--border); background:var(--bg-alt); font-weight:600; font-family:inherit; cursor:pointer;">
+                    <option value="en">English</option>
+                    <option value="ta">தமிழ்</option>
+                </select>
+            </div>
+            <a href="logout" class="nav-item" style="margin:0; border-radius:12px;"><i data-lucide="log-out" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_signout">Sign Out</span></a>
+        </div>
+    </aside>
+
+    <main class="main-content-v2">
+        <div class="top-nav">
+            <div style="font-size:1.25rem; font-weight:700; color:var(--bg-dark);" data-i18n="sol_market_title">Market Intelligence</div>
+            <div style="display:flex; align-items:center; gap:1.5rem;">
+                <div style="position:relative;">
+                    <button onclick="toggleNotifs(event)" style="background:var(--bg-alt); border:none; cursor:pointer; width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; transition:0.3s;">
+                        <i data-lucide="bell" style="width:22px; height:22px; color:var(--text-main);"></i>
+                        <span id="notifBadge" class="notif-pill" style="display:none; position:absolute; top:-4px; right:-4px;">0</span>
+                    </button>
+                    <div id="notifDropdown" style="display:none; position:absolute; top:60px; right:0; width:360px; background:white; border:1px solid var(--border); border-radius:20px; box-shadow:var(--shadow-lg); z-index:1001; padding:1.5rem;">
+                        <div class="flex-between" style="padding-bottom:1rem; border-bottom:1px solid var(--border); margin-bottom:1rem;">
+                            <span style="font-weight:800; color:var(--bg-dark);" data-i18n="dash_notifs">Notifications</span>
+                        </div>
+                        <div id="notifList" style="max-height:300px; overflow-y:auto;"></div>
+                    </div>
+                </div>
+                <div id="userInitial" style="width:44px; height:44px; background:linear-gradient(135deg, var(--primary), var(--success)); color:white; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.1rem;">F</div>
+            </div>
+        </div>
+
+        <div class="content-body">
+            <div class="reveal active" style="margin-bottom:2.5rem;">
+                <h1 style="font-size:2.5rem; font-weight:800; color:var(--bg-dark); letter-spacing:-1.5px; margin-bottom:0.5rem;" data-i18n="dash_mandi_rates">Real-time Mandi Rates</h1>
+                <p style="color:var(--text-muted); font-size:1.1rem;" data-i18n="dash_mandi_desc">Access live price indexing from regional and national markets.</p>
+            </div>
+
+            <div class="chart-container reveal active">
+                <canvas id="priceTrendChart"></canvas>
+            </div>
+
+            <!-- Search -->
+            <div class="search-container reveal active">
+                <input type="text" id="priceSearch" class="search-input" placeholder="Search by crop or market..." oninput="filterPrices()">
+                <button type="button" class="voice-btn" onclick="startVoice('priceSearch', this)" style="position:absolute; right:10px; top:50%; transform:translateY(-50%);">
+                    <i data-lucide="mic" style="width:20px; height:20px;"></i>
+                </button>
+            </div>
+
+            <!-- Prices Table -->
+            <div class="card-v2 reveal active" style="padding:0; overflow:hidden; border-radius:24px; margin-bottom:3rem;">
+                <table style="width:100%; border-collapse:collapse;">
+                    <thead>
+                        <tr style="background:var(--bg-alt); border-bottom:1.5px solid var(--border);">
+                            <th style="padding:1.5rem 2rem; text-align:left; font-size:0.85rem; text-transform:uppercase; color:var(--text-muted); font-weight:800; letter-spacing:1px;" data-i18n="col_crop">Crop</th>
+                            <th style="padding:1.5rem 2rem; text-align:left; font-size:0.85rem; text-transform:uppercase; color:var(--text-muted); font-weight:800; letter-spacing:1px;" data-i18n="col_rate">Rate (₹/KG)</th>
+                            <th style="padding:1.5rem 2rem; text-align:left; font-size:0.85rem; text-transform:uppercase; color:var(--text-muted); font-weight:800; letter-spacing:1px;" data-i18n="col_market">Market</th>
+                            <th style="padding:1.5rem 2rem; text-align:left; font-size:0.85rem; text-transform:uppercase; color:var(--text-muted); font-weight:800; letter-spacing:1px;" data-i18n="col_state">State</th>
+                        </tr>
+                    </thead>
+                    <tbody id="priceTableBody">
+                        <tr><td colspan="4" style="padding:3rem; text-align:center; color:var(--text-muted);">Loading market data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Farmer: Price Request Form -->
+            <div id="farmerSection" style="display:none;">
+                <div class="price-request-card reveal active">
+                    <h2 style="font-size:1.5rem; font-weight:800; color:var(--bg-dark); margin-bottom:1.5rem;" data-i18n="price_request_title">Request Market Price</h2>
+                    <form id="priceRequestForm" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:1.5rem; align-items:end;">
+                        <div class="form-group">
+                            <label style="display:block; margin-bottom:8px; font-weight:700; color:var(--text-main);" data-i18n="price_request_crop">Crop Name</label>
+                            <input type="text" name="cropName" required style="width:100%; padding:12px; border-radius:12px; border:1px solid var(--border);">
+                        </div>
+                        <div class="form-group">
+                            <label style="display:block; margin-bottom:8px; font-weight:700; color:var(--text-main);" data-i18n="expected_price">Expected Price (₹/kg)</label>
+                            <input type="number" name="requestedPrice" min="0.01" step="0.01" required style="width:100%; padding:12px; border-radius:12px; border:1px solid var(--border);">
+                        </div>
+                        <div class="form-group">
+                            <label style="display:block; margin-bottom:8px; font-weight:700; color:var(--text-main);" data-i18n="quantity">Quantity (approx kg)</label>
+                            <input type="text" name="quantity" required style="width:100%; padding:12px; border-radius:12px; border:1px solid var(--border);">
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="priceReqBtn" style="padding:12px 24px; border-radius:12px; font-weight:800;" data-i18n="btn_submit">Submit Request</button>
+                    </form>
+                </div>
+                <div class="card-v2 reveal active" style="margin-top:2rem; padding:2rem;">
+                    <h3 style="font-size:1.25rem; font-weight:800; margin-bottom:1.5rem;">Your Price Request History</h3>
+                    <div id="farmerHistory" style="display:flex; flex-direction:column; gap:1rem;"></div>
+                </div>
+            </div>
+
+            <!-- Admin: Pending Requests -->
+            <div id="adminPriceSection" class="price-request-card reveal active" style="display:none;">
+                <h2 style="font-size:1.5rem; font-weight:800; color:var(--bg-dark); margin-bottom:1.5rem;">Farmer Price Requests (Admin)</h2>
+                <div id="adminReqList" style="display:flex; flex-direction:column; gap:1rem;"></div>
+            </div>
+
+            <div class="reveal" style="margin-top:4rem; padding:2rem; background:var(--primary-light); border-radius:20px; text-align:center;">
+                <div style="display:flex; align-items:center; justify-content:center; gap:10px; color:var(--primary); font-weight:700;">
+                    <i data-lucide="info" style="width:20px; height:20px;"></i>
+                    <span data-i18n="prices_sync_info">Prices are synchronized daily with the National Mandi Intelligence Database.</span>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/i18n.js"></script>
+<script>
+    lucide.createIcons();
+    let allPrices = [];
+    let currentUser = null;
+    let priceChart  = null;
+
+    Api.get('login').then(data => {
+        if (!data || !data.loggedIn) { window.location.href = 'login.html'; return; }
+        currentUser = data.user;
+        document.getElementById('userInitial').innerText = data.user.fullName.charAt(0);
+        if (data.user.role === 'ADMIN') {
+            document.getElementById('adminLink').style.display = 'flex';
+            document.getElementById('adminPriceSection').style.display = 'block';
+            loadAdminRequests();
+        } else if (data.user.role === 'FARMER') {
+            document.getElementById('farmerSection').style.display = 'block';
+            loadFarmerHistory();
+        }
+        loadPrices();
+        loadNotifs();
+    });
+
+    /* ── Chart ── */
+    function initChart(labels, datasets) {
+        const ctx = document.getElementById('priceTrendChart').getContext('2d');
+        if (priceChart) priceChart.destroy();
+        priceChart = new Chart(ctx, {
+            type: 'line',
+            data: { labels, datasets },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: { display: true, position: 'top' },
+                    tooltip: { enabled: true }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        grid: { color: 'rgba(0,0,0,0.05)' },
+                        title: { display: true, text: 'Price (₹/KG)', font: { weight: 'bold' } }
+                    },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    }
+
+    function updateMarketOverview() {
+        if (!allPrices || allPrices.length === 0) return;
+
+        const labels = ['Day -6','Day -5','Day -4','Day -3','Day -2','Yesterday','Today'];
+
+        // Define key crops to track for the overview
+        const keyCrops = ['Rice', 'Tomato', 'Cotton', 'Turmeric', 'Onion'];
+        const colors = ['#059669', '#ef4444', '#3b82f6', '#f59e0b', '#8b5cf6'];
+
+        const datasets = [];
+
+        keyCrops.forEach((name, idx) => {
+            const cropMatch = allPrices.find(p => p.cropName.toLowerCase() === name.toLowerCase());
+            if (cropMatch) {
+                const base = cropMatch.pricePerKg;
+                // Simulate trend
+                const data = labels.map((_, i) => {
+                    if (i === 6) return base;
+                    // Random variation of +/- 5%
+                    const variation = (Math.random() * 0.1) - 0.05;
+                    return Number((base * (1 + variation)).toFixed(2));
+                });
+
+                datasets.push({
+                    label: name + ' (Mandi Index)',
+                    data: data,
+                    borderColor: colors[idx],
+                    backgroundColor: 'transparent',
+                    tension: 0.4,
+                    borderWidth: 3,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                });
+            }
+        });
+
+        // Add "Market Average" if multiple crops found
+        if (datasets.length > 1) {
+            const avgData = labels.map((_, i) => {
+                const sum = datasets.reduce((acc, ds) => acc + ds.data[i], 0);
+                return Number((sum / datasets.length).toFixed(2));
+            });
+            datasets.unshift({
+                label: 'Whole Market Average',
+                data: avgData,
+                borderColor: '#1f2937',
+                backgroundColor: 'rgba(31, 41, 55, 0.05)',
+                fill: true,
+                tension: 0.4,
+                borderWidth: 2,
+                borderDash: [5, 5],
+                pointRadius: 0
+            });
+        }
+
+        initChart(labels, datasets);
+    }
+
+    /* ── Load All Market Prices ── */
+    function loadPrices() {
+        Api.get('market').then(data => {
+            if (!data) return;
+            allPrices = Array.isArray(data) ? data : [];
+            renderPrices(allPrices);
+            updateMarketOverview();
+        });
+    }
+
+    function renderPrices(data) {
+        const tbody = document.getElementById('priceTableBody');
+        if (!data || data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="padding:3rem; text-align:center; color:var(--text-muted);">No market prices available.</td></tr>';
+            return;
+        }
+        tbody.innerHTML = data.map(item => `
+            <tr style="border-bottom:1px solid var(--border); cursor:pointer; transition:background 0.2s;" onmouseover="this.style.background='var(--bg-alt)'" onmouseout="this.style.background=''">
+                <td style="padding:1.5rem 2rem; font-weight:700;">${escHtml(item.cropName)}</td>
+                <td style="padding:1.5rem 2rem;"><span style="color:var(--primary); font-weight:800;">₹${Number(item.pricePerKg).toFixed(2)}</span></td>
+                <td style="padding:1.5rem 2rem;">${escHtml(item.marketName)}</td>
+                <td style="padding:1.5rem 2rem;">${escHtml(item.state)}</td>
+            </tr>
+        `).join('');
+        lucide.createIcons();
+    }
+
+    function filterPrices() {
+        const q = document.getElementById('priceSearch').value.toLowerCase();
+        const filtered = allPrices.filter(p =>
+            (p.cropName   || '').toLowerCase().includes(q) ||
+            (p.marketName || '').toLowerCase().includes(q)
+        );
+        renderPrices(filtered);
+    }
+
+    /* ── Farmer: Submit Price Request ── */
+    document.getElementById('priceRequestForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = App.Forms.serialize(this);
+        formData.append('action', 'submit');
+        App.UI.setLoading('priceReqBtn', true);
+        Api.post('price-requests', formData).then(data => {
+            App.UI.setLoading('priceReqBtn', false);
+            if (data && data.success) {
+                App.UI.showToast('Price request submitted!', 'success');
+                this.reset();
+                loadFarmerHistory();
+            } else {
+                App.UI.showToast((data && data.message) || 'Submission failed', 'error');
+            }
+        });
+    });
+
+    function loadFarmerHistory() {
+        Api.get('price-requests').then(requests => {
+            const history = document.getElementById('farmerHistory');
+            if (!requests || requests.length === 0) {
+                history.innerHTML = '<p style="color:var(--text-muted);">No requests submitted yet.</p>';
+                return;
+            }
+            history.innerHTML = requests.map(r => `
+                <div class="card-v2" style="padding:1rem; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div style="font-weight:800;">${escHtml(r.cropName)}</div>
+                        <div style="color:var(--text-muted); font-size:0.85rem;">Requested: ₹${Number(r.requestedPrice).toFixed(2)}/kg | Qty: ${escHtml(r.quantity)}</div>
+                    </div>
+                    <div style="text-align:right;">
+                        <span class="status-badge status-${(r.status||'pending').toLowerCase()}">${escHtml(r.status)}</span>
+                        ${r.adminPrice ? `<div style="font-weight:800; color:var(--primary); margin-top:4px;">Accepted: ₹${Number(r.adminPrice).toFixed(2)}</div>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        });
+    }
+
+    /* ── Admin: Load + Process Price Requests ── */
+    function loadAdminRequests() {
+        Api.get('price-requests').then(requests => {
+            const list = document.getElementById('adminReqList');
+            if (!requests || requests.length === 0) {
+                list.innerHTML = '<p style="color:var(--text-muted);">No pending farmer price requests.</p>';
+                return;
+            }
+            const crops = [...new Set(requests.map(r => r.cropName))];
+            list.innerHTML = crops.map(crop => {
+                const cropReqs = requests.filter(r => r.cropName === crop);
+                const avg = cropReqs.reduce((acc, r) => acc + r.requestedPrice, 0) / cropReqs.length;
+                const farmers = cropReqs.map(r => escHtml(r.farmerName || 'Farmer')).join(', ');
+                const safeId  = crop.replace(/[^a-zA-Z0-9]/g, '_');
+                return `
+                    <div style="background:var(--bg-alt); padding:1.5rem; border-radius:15px; border:1px solid var(--border);">
+                        <div class="flex-between" style="margin-bottom:1rem;">
+                            <span style="font-weight:800; color:var(--bg-dark); font-size:1.1rem;">${escHtml(crop)}</span>
+                            <span style="background:var(--primary); color:white; padding:4px 12px; border-radius:20px; font-size:0.85rem; font-weight:800;">Avg Request: ₹${avg.toFixed(2)}</span>
+                        </div>
+                        <div style="font-size:0.9rem; color:var(--text-muted); margin-bottom:1rem;">Requests from: <strong>${farmers}</strong></div>
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <input type="number" id="price_${safeId}" min="0.01" step="0.01" placeholder="Final Price (₹)" style="padding:8px; border-radius:8px; border:1px solid var(--border); flex:1;">
+                            <button onclick="setMarketPrice('${escJs(crop)}', '${safeId}')" class="btn btn-primary" style="padding:8px 16px; font-size:0.85rem; white-space:nowrap;">Update Mandi Price</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        });
+    }
+
+    function setMarketPrice(cropName, inputId) {
+        const priceInput = document.getElementById('price_' + inputId);
+        const price = priceInput ? priceInput.value.trim() : '';
+        if (!price || parseFloat(price) <= 0) { App.UI.showToast('Enter a valid price', 'error'); return; }
+
+        const marketParams = new URLSearchParams();
+        marketParams.append('cropName', cropName);
+        marketParams.append('price', price);
+
+        Api.post('market', marketParams).then(res => {
+            if (!res || !res.success) { App.UI.showToast('Market price update failed', 'error'); return; }
+            // Now process all pending requests for that crop
+            Api.get('price-requests').then(requests => {
+                if (!requests) return;
+                const cropReqs = requests.filter(r => r.cropName === cropName);
+                const promises = cropReqs.map(req => {
+                    const params = new URLSearchParams();
+                    params.append('action', 'process');
+                    params.append('requestId', req.requestId);
+                    params.append('adminPrice', price);
+                    return Api.post('price-requests', params);
+                });
+                Promise.all(promises).then(() => {
+                    App.UI.showToast('Updated market price for ' + cropName + ' to ₹' + price, 'success');
+                    loadAdminRequests();
+                    loadPrices();
+                });
+            });
+        });
+    }
+
+    /* ── Notifications ── */
+    function loadNotifs() {
+        Api.get('notifications').then(data => {
+            if (!data) return;
+            const badge = document.getElementById('notifBadge');
+            const unread = data.filter(n => !n.isRead).length;
+            if (unread > 0) { badge.style.display = 'flex'; badge.innerText = unread; }
+            const list = document.getElementById('notifList');
+            list.innerHTML = data.length === 0
+                ? '<div style="padding:2rem; text-align:center; color:var(--text-muted);">No notifications</div>'
+                : data.map(n => `<div style="padding:1rem; border-bottom:1px solid var(--border); font-size:0.9rem; color:${n.isRead ? 'var(--text-muted)' : 'var(--bg-dark)'};">${escHtml(n.message)}</div>`).join('');
+        });
+    }
+    function toggleNotifs(e) {
+        e.stopPropagation();
+        const drop = document.getElementById('notifDropdown');
+        drop.style.display = drop.style.display === 'none' ? 'block' : 'none';
+    }
+    document.addEventListener('click', () => document.getElementById('notifDropdown').style.display = 'none');
+
+    /* ── Voice ── */
+    function startVoice(targetId, btn) {
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SR) { App.UI.showToast('Voice not supported', 'error'); return; }
+        const recognition = new SR();
+        const lang = document.getElementById('lang-switcher');
+        recognition.lang = lang && lang.value === 'ta' ? 'ta-IN' : 'en-US';
+        recognition.interimResults = false;
+        recognition.onstart  = () => { btn.classList.add('listening'); App.UI.showToast('Listening...', 'info'); };
+        recognition.onresult = e => {
+            const t = e.results[0][0].transcript;
+            const el = document.getElementById(targetId);
+            if (el) { el.value = el.value ? el.value + ' ' + t : t; filterPrices(); }
+        };
+        recognition.onerror  = () => { btn.classList.remove('listening'); App.UI.showToast('Voice error', 'error'); };
+        recognition.onend    = () => btn.classList.remove('listening');
+        recognition.start();
+    }
+
+    /* ── Sanitize helpers ── */
+    function escHtml(str) {
+        if (str == null) return '';
+        return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    function escJs(str) {
+        if (str == null) return '';
+        return String(str).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    }
+
+    const observer = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); }), {threshold: 0.1});
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

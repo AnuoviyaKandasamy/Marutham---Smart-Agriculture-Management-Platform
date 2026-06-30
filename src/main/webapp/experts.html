@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expert Directory | Marutham</title>
+    <link rel="stylesheet" href="css/style.css?v=12.0.5">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+<div class="dashboard-shell">
+    <aside class="sidebar-v2">
+        <div class="sidebar-header">
+            <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:12px;">
+                <div style="background:var(--primary); color:white; width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center;">
+                    <i data-lucide="leaf" style="width:22px; height:22px;"></i>
+                </div>
+                <span style="font-weight:800; color:var(--bg-dark); font-size:1.5rem; letter-spacing:-1px;">Marutham</span>
+            </a>
+        </div>
+        <nav class="nav-group" style="flex:1; margin-top: 2rem;">
+            <a href="dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_dashboard">Dashboard</span></a>
+            <a href="forum.html" class="nav-item"><i data-lucide="message-square" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_forum">Community Forum</span></a>
+            <a href="prices.html" class="nav-item"><i data-lucide="line-chart" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_prices">Market Prices</span></a>
+            <a href="equipment.html" class="nav-item"><i data-lucide="tractor" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_equipment">Equipment Hub</span></a>
+            <a href="consultation.html" class="nav-item"><i data-lucide="graduation-cap" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_expert">Expert Help</span></a>
+            <a href="experts.html" class="nav-item active"><i data-lucide="users" style="width:20px; height:20px;"></i><span data-i18n="nav_directory">Expert Directory</span></a>
+            <a href="profile.html" class="nav-item"><i data-lucide="user" style="width:20px; height:20px;"></i><span data-i18n="nav_profile">My Profile</span></a>
+            <a id="adminLink" href="admin.html" class="nav-item" style="display:none; color:var(--accent);"><i data-lucide="shield-alert" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_admin">Admin Control</span></a>
+        </nav>
+        <div style="padding: 2rem; border-top:1px solid var(--border);">
+            <div style="margin-bottom: 1.5rem;">
+                <select id="lang-switcher" style="width:100%; padding: 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-alt); font-weight: 600; font-family: inherit; cursor: pointer;">
+                    <option value="en">English</option>
+                    <option value="ta">தமிழ்</option>
+                </select>
+            </div>
+            <a href="logout" class="nav-item" style="margin:0; border-radius:12px;"><i data-lucide="log-out" style="width:20px; height:20px;"></i><span data-i18n="dash_nav_signout">Sign Out</span></a>
+        </div>
+    </aside>
+
+    <main class="main-content-v2">
+        <div class="top-nav">
+            <div style="font-size:1.25rem; font-weight:700; color:var(--bg-dark);" data-i18n="nav_directory">Expert Directory</div>
+            <div id="userInitial" style="width:44px; height:44px; background:linear-gradient(135deg, var(--primary), var(--success)); color:white; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:800;">F</div>
+        </div>
+
+        <div class="content-body">
+            <div style="margin-bottom:3rem;">
+                <h1 style="font-size:2.5rem; font-weight:800; color:var(--bg-dark); letter-spacing:-1.5px; margin-bottom:0.5rem;" data-i18n="stat_experts">Agricultural Experts</h1>
+                <p style="color:var(--text-muted); font-size:1.1rem;" data-i18n="sol_expert_desc">Connect with certified agronomists and farming specialists.</p>
+            </div>
+
+            <div class="card-v2" style="padding:1.5rem 2rem; margin-bottom:2.5rem; display:flex; align-items:center; gap:1.5rem;">
+                <i data-lucide="search" style="width:20px; height:20px; color:var(--primary); flex-shrink:0;"></i>
+                <input type="text" id="expertSearch" placeholder="Search by name or username..." style="flex:1; border:none; outline:none; font-size:1rem; background:transparent;" oninput="loadExperts()">
+            </div>
+
+            <div id="expertsList" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap:2rem;">
+                <div style="text-align:center; padding:3rem; color:var(--text-muted); grid-column:1/-1;">Loading experts...</div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/i18n.js"></script>
+<script>
+lucide.createIcons();
+
+Api.get('login').then(data => {
+    if (!data || !data.loggedIn) { window.location.href = 'login.html'; return; }
+    if (data.user.role === 'ADMIN') document.getElementById('adminLink').style.display = 'flex';
+    document.getElementById('userInitial').innerText = data.user.fullName.charAt(0);
+    loadExperts();
+});
+
+function loadExperts() {
+    const q = document.getElementById('expertSearch').value.trim();
+    Api.get('profile?type=experts&q=' + encodeURIComponent(q)).then(experts => {
+        const list = document.getElementById('expertsList');
+        if (!experts || experts.length === 0) {
+            list.innerHTML = '<div style="text-align:center; padding:3rem; color:var(--text-muted); grid-column:1/-1;"><i data-lucide="user-x" style="width:48px; height:48px; opacity:0.3; margin-bottom:1rem;"></i><p>No experts found</p></div>';
+            lucide.createIcons();
+            return;
+        }
+        list.innerHTML = experts.map(e => `
+            <div class="card-v2" style="padding:2rem; display:flex; flex-direction:column; gap:1.25rem;">
+                <div style="display:flex; align-items:center; gap:1.25rem;">
+                    <div style="width:60px; height:60px; border-radius:50%; background:linear-gradient(135deg, var(--primary), var(--success)); display:flex; align-items:center; justify-content:center; font-size:1.5rem; font-weight:800; color:white; flex-shrink:0;">${e.fullName.charAt(0)}</div>
+                    <div>
+                        <div style="font-weight:800; font-size:1.1rem; color:var(--bg-dark);">${e.fullName}</div>
+                        <div style="color:var(--text-muted); font-size:0.9rem;">@${e.username}</div>
+                    </div>
+                </div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <span style="background:var(--primary-light); color:var(--primary); padding:4px 12px; border-radius:8px; font-size:0.8rem; font-weight:700;" data-i18n="role_expert">EXPERT</span>
+                    ${e.location ? `<span style="background:var(--bg-alt); color:var(--text-muted); padding:4px 12px; border-radius:8px; font-size:0.8rem;">📍 ${e.location}</span>` : ''}
+                </div>
+                <a href="consultation.html" class="btn btn-outline" style="text-align:center; padding:0.75rem; border-radius:12px; text-decoration:none; font-weight:700; font-size:0.9rem;" data-i18n="expert_ask_question">
+                    Ask a Question →
+                </a>
+            </div>
+        `).join('');
+
+        I18n.applyLanguage(I18n.currentLang);
+        lucide.createIcons();
+    });
+}
+</script>
+</body>
+</html>

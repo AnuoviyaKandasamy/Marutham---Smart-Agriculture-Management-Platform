@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | Marutham Portal</title>
+    <link rel="stylesheet" href="css/style.css?v=12.0.4">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <!-- Language Switcher -->
+    <div style="position: fixed; top: 20px; right: 20px; z-index: 1001;">
+        <select id="lang-switcher" style="padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border); background: white; font-weight: 600; font-family: inherit; cursor: pointer; box-shadow: var(--shadow-sm);">
+            <option value="en">English</option>
+            <option value="ta">தமிழ்</option>
+        </select>
+    </div>
+
+    <div class="auth-split-wrapper">
+        <div class="auth-visual-side animate-left">
+            <div style="position:relative; z-index:10; height:100%; display:flex; flex-direction:column;">
+                <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:12px; margin-bottom: 4rem;">
+                    <div style="background:var(--primary); color:white; width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+                        <i data-lucide="leaf" style="width:24px; height:24px;"></i>
+                    </div>
+                    <span style="font-weight:900; color:white; font-size:1.8rem; letter-spacing:-1px;">Marutham</span>
+                </a>
+
+                <h1 style="font-size: 4rem; font-weight: 800; line-height: 1; margin-bottom: 2rem; letter-spacing:-2px;" data-i18n="reg_title">Join the <br>Ecosystem.</h1>
+                <p style="font-size: 1.25rem; opacity: 0.9; max-width: 500px; line-height:1.6;" data-i18n="reg_subtitle">Build your digital profile today. Access real-time intelligence and community resources to scale your agricultural output.</p>
+
+                <div style="margin-top:auto;">
+                    <div style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); padding:2.5rem; border-radius:24px; backdrop-filter:blur(12px);">
+                        <div style="color:var(--accent); font-size:1.5rem; margin-bottom:1rem;">⭐⭐⭐⭐⭐</div>
+                        <p style="font-style:italic; margin-bottom:1.5rem; font-size:1.1rem; line-height:1.6;" data-i18n="reg_testimonial_text">"Joining Marutham was the best decision for my farm. The market updates are incredibly accurate and the community is very helpful."</p>
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div style="width:40px; height:40px; border-radius:50%; background:var(--primary); display:flex; align-items:center; justify-content:center; font-weight:800;">R</div>
+                            <div>
+                                <span style="display:block; font-weight:700;">Rajesh Kumar</span>
+                                <span style="font-size:0.8rem; opacity:0.7;" data-i18n="reg_testimonial_role">Verified Wheat Farmer</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="auth-form-side animate-right">
+            <div class="auth-card-compact" style="max-width: 540px;">
+                <div style="margin-bottom: 3rem;">
+                    <h2 style="font-size: 2.5rem; font-weight: 800; color: var(--bg-dark); margin-bottom: 0.75rem; letter-spacing:-1px;" data-i18n="reg_form_title">Create Account</h2>
+                    <p style="color: var(--text-muted); font-size:1.1rem;" data-i18n="reg_form_subtitle">Empower your farming journey with digital tools</p>
+                </div>
+
+                <form id="regForm">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.5rem;">
+                        <div class="form-group">
+                            <label data-i18n="label_full_name">Full Name</label>
+                            <input type="text" name="fullName" placeholder="Rahul Kumar" required>
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="label_username">Username</label>
+                            <input type="text" name="username" placeholder="rahul_123" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label data-i18n="label_email">Email Address</label>
+                        <div class="input-with-icon">
+                            <i data-lucide="mail" style="width:18px; height:18px;"></i>
+                            <input type="email" name="email" placeholder="rahul@example.com" required>
+                        </div>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.5rem;">
+                        <div class="form-group">
+                            <label data-i18n="label_phone">Phone Number</label>
+                            <div class="input-with-icon">
+                                <i data-lucide="phone" style="width:18px; height:18px;"></i>
+                                <input type="tel" name="phone" placeholder="9876543210" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="label_role">Your Role</label>
+                            <select name="role">
+                                <option value="FARMER" data-i18n="role_farmer">Farmer</option>
+                                <option value="EXPERT" data-i18n="role_expert">Agri Expert</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label data-i18n="label_password">Password</label>
+                        <div class="input-with-icon">
+                            <i data-lucide="lock" style="width:18px; height:18px;"></i>
+                            <input type="password" name="password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="regBtn" class="btn btn-primary" style="width:100%; padding: 1.1rem; margin-top: 1.5rem;" data-i18n="btn_register">Register Account</button>
+                </form>
+
+                <div style="margin-top: 3.5rem; text-align: center; padding-top: 2rem; border-top: 1px solid var(--border);">
+                    <p style="font-size: 1rem; color: var(--text-muted);" data-i18n="reg_footer">
+                        Already registered? <a href="login.html" style="color: var(--primary); font-weight: 800; text-decoration: none;">Sign in here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/i18n.js"></script>
+    <script>
+        lucide.createIcons();
+        document.getElementById('regForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if(!App.Forms.validate('regForm')) return;
+            App.UI.setLoading('regBtn', true);
+            Api.post('register', App.Forms.serialize(this)).then(res => {
+                App.UI.setLoading('regBtn', false);
+                if(res && res.success) {
+                    window.location.href = 'login.html?msg=' + encodeURIComponent(res.message);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
